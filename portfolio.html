@@ -1,0 +1,497 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<title>Akka — Portfolio (demo)</title>
+<link rel="preconnect" href="https://api.fontshare.com" />
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=satoshi@300,400,500,700,900&display=swap" />
+<style>
+:root {
+  --akka-dark-green:       #0C2A24;
+  --akka-dark-green-soft:  #123530;
+  --akka-highlight-green:  #3DDC97;
+  --fg-1: #ffffff;
+  --fg-2: rgba(255,255,255,0.72);
+  --fg-3: rgba(255,255,255,0.48);
+  --fg-accent: #3DDC97;
+  --font-display: "Satoshi", "Inter", system-ui, sans-serif;
+  --font-body:    "Satoshi", "Inter", system-ui, sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html, body {
+  margin: 0; padding: 0;
+  min-height: 100vh;
+  background: #f0f0ec;
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  display: flex; align-items: center; justify-content: center;
+  padding: 48px 20px;
+}
+
+/* ---- Phone frame ---- */
+.stage { position: relative; width: 390px; height: 844px; }
+.phone {
+  position: relative; width: 390px; height: 844px;
+  border-radius: 54px; background: #1d1f22; padding: 11px;
+  box-shadow:
+    0 60px 80px -30px rgba(20,30,40,0.22),
+    0 25px 50px -20px rgba(20,30,40,0.14),
+    0 0 0 1px rgba(255,255,255,0.06) inset;
+}
+.screen {
+  width: 100%; height: 100%; border-radius: 44px;
+  overflow: hidden; position: relative;
+  background: var(--akka-dark-green); color: var(--fg-1);
+}
+.notch {
+  position: absolute; top: 11px; left: 50%; transform: translateX(-50%);
+  width: 162px; height: 32px; background: #1d1f22;
+  border-radius: 0 0 22px 22px; z-index: 30;
+}
+.notch::after {
+  content: ""; position: absolute; right: 26px; top: 10px;
+  width: 11px; height: 11px; border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #2a3540 0%, #0a0e14 70%);
+}
+.notch::before {
+  content: ""; position: absolute; left: 38px; top: 13px;
+  width: 50px; height: 5px; background: #0a0e14; border-radius: 4px;
+}
+.btn-side { position: absolute; background: #1d1f22; width: 3px; }
+.btn-side.silent { left: -3px; top: 110px; height: 32px; border-radius: 2px 0 0 2px; }
+.btn-side.vol-up { left: -3px; top: 165px; height: 60px; border-radius: 2px 0 0 2px; }
+.btn-side.vol-dn { left: -3px; top: 235px; height: 60px; border-radius: 2px 0 0 2px; }
+.btn-side.power  { right: -3px; top: 200px; height: 96px; border-radius: 0 2px 2px 0; }
+
+/* ---- Status bar ---- */
+.statusbar {
+  position: relative; z-index: 5; height: 54px; padding: 18px 30px 0;
+  display: flex; align-items: center; justify-content: space-between;
+  color: #fff;
+  font-family: -apple-system, "SF Pro Text", system-ui, sans-serif;
+  font-weight: 600; font-size: 16px; letter-spacing: -0.2px;
+}
+.statusbar .icons { display: flex; align-items: center; gap: 6px; }
+
+/* ---- Content ---- */
+.content {
+  position: absolute; inset: 0; padding-top: 54px;
+  overflow-y: auto; scrollbar-width: none;
+  padding-bottom: 92px;
+}
+.content::-webkit-scrollbar { display: none; }
+
+/* ---- Segmented toggle ---- */
+.segmented {
+  margin: 14px 22px 24px;
+  height: 52px; background: rgba(255,255,255,0.04);
+  border-radius: 999px; padding: 6px;
+  display: grid; grid-template-columns: 1fr 1fr;
+}
+.segmented .seg {
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 999px; font-size: 15px; font-weight: 700;
+  letter-spacing: -0.2px; color: rgba(255,255,255,0.55); cursor: pointer;
+}
+.segmented .seg.active {
+  background: var(--akka-highlight-green);
+  color: var(--akka-dark-green);
+}
+
+/* ---- Diversification card ---- */
+.diversification {
+  margin: 0 22px;
+  background: linear-gradient(180deg, rgba(61,220,151,0.04) 0%, rgba(61,220,151,0.02) 100%);
+  border: 1px solid rgba(61,220,151,0.18);
+  border-radius: 22px; padding: 18px 20px;
+  position: relative; overflow: hidden;
+}
+.diversification::before {
+  content: ""; position: absolute; right: -40px; bottom: -40px;
+  width: 160px; height: 160px; border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, rgba(61,220,151,0.45) 0%, rgba(61,220,151,0) 70%);
+  filter: blur(8px); pointer-events: none;
+}
+.diversification::after {
+  content: ""; position: absolute; right: 18px; bottom: 18px;
+  width: 60px; height: 60px;
+  border: 1.5px solid rgba(61,220,151,0.35);
+  border-top-color: transparent; border-left-color: transparent;
+  border-radius: 0 0 18px 0; pointer-events: none;
+}
+.div-row { display: flex; justify-content: space-between; align-items: flex-start; gap: 14px; position: relative; z-index: 1; }
+.div-left { flex: 1; }
+.div-title { font-size: 17px; font-weight: 700; color: #fff; letter-spacing: -0.3px; margin-bottom: 4px; }
+.div-sub   { font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.55); }
+.div-right { text-align: right; padding-right: 6px; }
+.div-num {
+  font-family: var(--font-display); color: var(--akka-highlight-green);
+  font-size: 32px; font-weight: 700; letter-spacing: -1px; line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.div-num .of { opacity: 0.55; font-size: 22px; font-weight: 600; margin-left: 2px; }
+.div-foot { font-size: 11px; color: rgba(255,255,255,0.45); font-weight: 500; margin-top: 4px; }
+.div-bar {
+  margin-top: 14px; height: 6px; background: rgba(255,255,255,0.08);
+  border-radius: 999px; overflow: hidden; position: relative; z-index: 1;
+}
+.div-bar > span { display: block; width: 40%; height: 100%; background: var(--akka-highlight-green); border-radius: 999px; }
+
+/* ---- Valuation / Revenue tabs ---- */
+.vtabs {
+  display: flex; gap: 28px; padding: 26px 22px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.vtab {
+  padding-bottom: 10px; position: relative;
+  color: rgba(255,255,255,0.42);
+  font-size: 17px; font-weight: 600; letter-spacing: -0.2px; cursor: pointer;
+}
+.vtab.active { color: #fff; }
+.vtab.active::after {
+  content: ""; position: absolute; left: -2px; right: -2px; bottom: -1px;
+  height: 2px; background: var(--akka-highlight-green); border-radius: 2px;
+}
+
+/* ---- Balance block ---- */
+.balance-block { padding: 22px 22px 0; }
+.balance-row { display: flex; align-items: center; gap: 8px; }
+.balance-amount {
+  font-family: var(--font-display); font-weight: 700;
+  font-size: 36px; letter-spacing: -1.6px; color: #fff;
+  line-height: 1; font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.info-circle {
+  width: 18px; height: 18px; border-radius: 50%;
+  border: 1.5px solid rgba(255,255,255,0.35);
+  color: rgba(255,255,255,0.55);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 700; font-style: italic;
+  font-family: Georgia, serif;
+}
+.balance-meta {
+  margin-top: 14px; display: flex; align-items: center; justify-content: space-between;
+}
+.meta-left { display: flex; align-items: center; gap: 10px; }
+.pct-pill {
+  background: rgba(61,220,151,0.16); color: var(--akka-highlight-green);
+  font-weight: 700; font-size: 13px; padding: 6px 11px;
+  border-radius: 999px; line-height: 1; letter-spacing: -0.1px;
+}
+.meta-gain { color: var(--akka-highlight-green); font-weight: 600; font-size: 15px; letter-spacing: -0.2px; }
+.period-pill {
+  height: 36px; padding: 0 14px 0 16px;
+  background: rgba(61,220,151,0.10); border-radius: 999px;
+  color: var(--akka-highlight-green);
+  font-size: 14px; font-weight: 600; letter-spacing: -0.2px;
+  display: flex; align-items: center; gap: 8px;
+}
+
+/* ---- Big sparkline ---- */
+.big-spark { margin: 26px 0 0; width: 100%; height: 142px; display: block; }
+
+/* ---- My investments ---- */
+.invest-section { padding: 22px 22px 0; }
+.invest-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+.invest-head h3 { margin: 0; color: #fff; font-size: 19px; font-weight: 700; letter-spacing: -0.3px; }
+.invest-head-right { display: flex; align-items: center; gap: 12px; }
+.icon-btn-sm { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.6); }
+.filter-pill {
+  height: 32px; padding: 0 10px 0 14px;
+  border: 1px solid rgba(255,255,255,0.14); border-radius: 999px;
+  color: rgba(255,255,255,0.85); font-size: 13px; font-weight: 600; letter-spacing: -0.1px;
+  display: flex; align-items: center; gap: 6px;
+}
+
+.invest-row {
+  display: flex; align-items: center;
+  padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,0.06); gap: 14px;
+}
+.invest-row:last-child { border-bottom: none; }
+
+.co-logo { width: 48px; height: 48px; border-radius: 12px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+.co-logo.anthropic { background: #fff; color: #0a0a0a; }
+.co-logo.anthropic .a-mark { font-family: var(--font-display); font-weight: 800; font-size: 22px; letter-spacing: -1px; display: flex; align-items: baseline; line-height: 1; }
+.co-logo.anthropic .a-mark .bar { color: #D97757; font-weight: 700; margin-left: 1px; }
+.co-logo.rhyde { background: #0a1612; color: var(--akka-highlight-green); }
+
+.invest-meta { flex: 1; min-width: 0; }
+.invest-name   { color: #fff; font-size: 16px; font-weight: 600; letter-spacing: -0.2px; line-height: 1.1; margin-bottom: 4px; }
+.invest-amount { color: rgba(255,255,255,0.55); font-size: 13px; font-weight: 500; font-variant-numeric: tabular-nums; }
+.invest-spark  { width: 56px; height: 28px; flex-shrink: 0; }
+.invest-perf   { text-align: right; flex-shrink: 0; min-width: 64px; margin: 0 4px; }
+.perf-pct { font-weight: 700; font-size: 15px; letter-spacing: -0.2px; line-height: 1.1; font-variant-numeric: tabular-nums; }
+.perf-pct.up   { color: var(--akka-highlight-green); }
+.perf-pct.down { color: #E5614C; }
+.perf-date { color: rgba(255,255,255,0.45); font-size: 12px; font-weight: 500; margin-top: 4px; }
+
+.doc-tag {
+  width: 50px; height: 56px;
+  background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 10px; flex-shrink: 0;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 4px; position: relative;
+}
+.doc-tag .doc-icon { color: rgba(255,255,255,0.85); width: 18px; height: 20px; }
+.doc-tag .doc-q    { color: #fff; font-size: 9px; font-weight: 700; letter-spacing: 0.1px; line-height: 1; }
+.doc-tag .doc-dot  { position: absolute; top: 6px; right: 6px; width: 6px; height: 6px; background: var(--akka-highlight-green); border-radius: 50%; }
+
+/* ---- Tab bar ---- */
+.tabbar {
+  position: absolute; bottom: 0; left: 0; right: 0; height: 92px;
+  background: var(--akka-dark-green); border-top: 1px solid rgba(255,255,255,0.06);
+  display: flex; align-items: flex-start; justify-content: space-around;
+  padding: 12px 14px 0; z-index: 10;
+}
+.tab { display: flex; flex-direction: column; align-items: center; gap: 6px; color: rgba(255,255,255,0.55); font-size: 11px; font-weight: 500; flex: 1; position: relative; }
+.tab .ti { width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; }
+.tab.active { color: var(--akka-highlight-green); font-weight: 600; }
+.tab .tab-dot { position: absolute; top: 0; left: calc(50% + 4px); width: 7px; height: 7px; border-radius: 50%; background: #E5614C; border: 2px solid var(--akka-dark-green); }
+.home-indicator { position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%); width: 134px; height: 5px; background: rgba(255,255,255,0.85); border-radius: 999px; z-index: 20; }
+</style>
+</head>
+<body>
+
+<div class="stage">
+  <div class="phone">
+    <span class="btn-side silent"></span>
+    <span class="btn-side vol-up"></span>
+    <span class="btn-side vol-dn"></span>
+    <span class="btn-side power"></span>
+
+    <div class="screen" data-screen="Akka Portfolio">
+      <div class="notch"></div>
+
+      <!-- Status bar -->
+      <div class="statusbar">
+        <span>12:22</span>
+        <span class="icons">
+          <svg width="18" height="11" viewBox="0 0 18 11" fill="none">
+            <rect x="0" y="7" width="3" height="4" rx="0.6" fill="#fff"/>
+            <rect x="5" y="5" width="3" height="6" rx="0.6" fill="#fff"/>
+            <rect x="10" y="2.5" width="3" height="8.5" rx="0.6" fill="#fff"/>
+            <rect x="15" y="0" width="3" height="11" rx="0.6" fill="#fff"/>
+          </svg>
+          <svg width="16" height="11" viewBox="0 0 16 11" fill="none">
+            <path d="M8 2.6c2.1 0 4 .8 5.4 2.2l1-1A8 8 0 0 0 8 1.4 8 8 0 0 0 1.6 3.8l1 1A7.6 7.6 0 0 1 8 2.6Z" fill="#fff"/>
+            <path d="M8 6c1.3 0 2.4.5 3.3 1.3l1-1A6 6 0 0 0 8 4.6 6 6 0 0 0 3.7 6.3l1 1A4.7 4.7 0 0 1 8 6Z" fill="#fff"/>
+            <circle cx="8" cy="9.6" r="1.4" fill="#fff"/>
+          </svg>
+          <svg width="26" height="12" viewBox="0 0 26 12" fill="none">
+            <rect x="0.5" y="0.5" width="22" height="11" rx="3" stroke="#fff" stroke-opacity="0.5" fill="none"/>
+            <rect x="2" y="2" width="19" height="8" rx="1.5" fill="#fff"/>
+            <path d="M24 4v4c.6-.2 1-.7 1-1.4V5.4c0-.7-.4-1.2-1-1.4Z" fill="#fff" fill-opacity="0.5"/>
+          </svg>
+        </span>
+      </div>
+
+      <div class="content">
+
+        <!-- Segmented toggle -->
+        <div class="segmented">
+          <div class="seg active">My portfolio</div>
+          <div class="seg">Akka portfolio</div>
+        </div>
+
+        <!-- Diversification card -->
+        <div class="diversification">
+          <div class="div-row">
+            <div class="div-left">
+              <div class="div-title">Diversification level</div>
+              <div class="div-sub">18 more to reduce your risk</div>
+            </div>
+            <div class="div-right">
+              <div class="div-num">12<span class="of">/30</span></div>
+              <div class="div-foot">investments</div>
+            </div>
+          </div>
+          <div class="div-bar"><span></span></div>
+        </div>
+
+        <!-- Valuation / Revenue tabs -->
+        <div class="vtabs">
+          <div class="vtab">Valuation</div>
+          <div class="vtab active">Revenue</div>
+        </div>
+
+        <!-- Balance -->
+        <div class="balance-block">
+          <div class="balance-row">
+            <div class="balance-amount">€28 381,31</div>
+            <span class="info-circle">i</span>
+          </div>
+          <div class="balance-meta">
+            <div class="meta-left">
+              <span class="pct-pill">+42 %</span>
+              <span class="meta-gain">+€8 381</span>
+            </div>
+            <div class="period-pill">
+              Last month
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="none">
+                <path d="m4 6 4 4 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+          </div>
+
+          <!-- Big sparkline -->
+          <svg class="big-spark" viewBox="0 0 346 142" preserveAspectRatio="none">
+            <defs>
+              <linearGradient id="bigFill" x1="0" x2="0" y1="0" y2="1">
+                <stop offset="0%" stop-color="#3DDC97" stop-opacity="0.18"/>
+                <stop offset="100%" stop-color="#3DDC97" stop-opacity="0"/>
+              </linearGradient>
+            </defs>
+            <path d="M0 110 C 28 108,56 104,86 96 S 144 78,180 64 S 240 42,280 30 S 330 14,346 8 L 346 142 L 0 142 Z" fill="url(#bigFill)"/>
+            <path d="M0 110 C 28 108,56 104,86 96 S 144 78,180 64 S 240 42,280 30 S 330 14,346 8" stroke="#3DDC97" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+
+        <!-- My investments -->
+        <div class="invest-section">
+          <div class="invest-head">
+            <h3>My investments</h3>
+            <div class="invest-head-right">
+              <div class="icon-btn-sm">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                  <circle cx="11" cy="11" r="6.5" stroke="currentColor" stroke-width="1.7"/>
+                  <path d="m16 16 4 4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+                </svg>
+              </div>
+              <div class="filter-pill">
+                All (5)
+                <svg width="12" height="12" viewBox="0 0 16 16" fill="none">
+                  <path d="m4 6 4 4 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <!-- Anthropic -->
+          <div class="invest-row">
+            <div class="co-logo anthropic">
+              <span class="a-mark">A<span class="bar">|</span></span>
+            </div>
+            <div class="invest-meta">
+              <div class="invest-name">Anthropic</div>
+              <div class="invest-amount">€1 500</div>
+            </div>
+            <svg class="invest-spark" viewBox="0 0 56 28" preserveAspectRatio="none">
+              <defs>
+                <linearGradient id="upFill" x1="0" x2="0" y1="0" y2="1">
+                  <stop offset="0%" stop-color="#3DDC97" stop-opacity="0.32"/>
+                  <stop offset="100%" stop-color="#3DDC97" stop-opacity="0"/>
+                </linearGradient>
+              </defs>
+              <path d="M0 18 C 8 16,14 19,22 16 S 36 8,44 6 S 52 4,56 3 L 56 28 L 0 28 Z" fill="url(#upFill)"/>
+              <path d="M0 18 C 8 16,14 19,22 16 S 36 8,44 6 S 52 4,56 3" stroke="#3DDC97" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+            </svg>
+            <div class="invest-perf">
+              <div class="perf-pct up">+28 %</div>
+              <div class="perf-date">Feb 2026</div>
+            </div>
+            <div class="doc-tag">
+              <svg class="doc-icon" viewBox="0 0 24 24" fill="none">
+                <path d="M7 3h7l5 5v13H7V3Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" fill="none"/>
+                <path d="M14 3v5h5" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+                <path d="M10 13h6M10 17h4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+              </svg>
+              <span class="doc-q">Q4 2025</span>
+              <span class="doc-dot"></span>
+            </div>
+          </div>
+
+          <!-- Rhyde -->
+          <div class="invest-row">
+            <div class="co-logo rhyde">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                <path d="M3 17 L9 11 L13 14 L21 5" stroke="#3DDC97" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M3 21 L9 15 L13 18 L21 9" stroke="#3DDC97" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" opacity="0.6"/>
+              </svg>
+            </div>
+            <div class="invest-meta">
+              <div class="invest-name">Rhyde</div>
+              <div class="invest-amount">€3 000</div>
+            </div>
+            <svg class="invest-spark" viewBox="0 0 56 28" preserveAspectRatio="none">
+              <path d="M0 6 C 8 8,14 10,22 14 S 36 18,44 22 S 52 24,56 25" stroke="#E5614C" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+            </svg>
+            <div class="invest-perf">
+              <div class="perf-pct down">-14 %</div>
+              <div class="perf-date">Feb 2026</div>
+            </div>
+            <div class="doc-tag">
+              <svg class="doc-icon" viewBox="0 0 24 24" fill="none">
+                <path d="M7 3h7l5 5v13H7V3Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" fill="none"/>
+                <path d="M14 3v5h5" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+                <path d="M10 13h6M10 17h4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+              </svg>
+              <span class="doc-q">Q4 2025</span>
+              <span class="doc-dot"></span>
+            </div>
+          </div>
+
+        </div>
+      </div><!-- /content -->
+
+      <!-- Tab bar -->
+      <div class="tabbar">
+        <div class="tab">
+          <div class="ti">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <path d="M12 3 3 10v11h6v-7h6v7h6V10z" stroke="rgba(255,255,255,0.55)" stroke-width="1.6" stroke-linejoin="round" fill="none"/>
+            </svg>
+          </div>
+          <span>Home</span>
+        </div>
+        <div class="tab active">
+          <div class="ti">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <rect x="4" y="14" width="3.5" height="6" rx="1" fill="#3DDC97"/>
+              <rect x="10.25" y="9" width="3.5" height="11" rx="1" fill="#3DDC97"/>
+              <rect x="16.5" y="4" width="3.5" height="16" rx="1" fill="#3DDC97"/>
+            </svg>
+          </div>
+          <span>Portfolio</span>
+        </div>
+        <div class="tab">
+          <div class="ti">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <path d="M12 2c4 3 6 7 6 11l-1 6h-10l-1-6c0-4 2-8 6-11Z" stroke="rgba(255,255,255,0.7)" stroke-width="1.6" stroke-linejoin="round"/>
+              <circle cx="12" cy="10" r="2" stroke="rgba(255,255,255,0.7)" stroke-width="1.6"/>
+              <path d="m7 17-2 4 4-1M17 17l2 4-4-1" stroke="rgba(255,255,255,0.7)" stroke-width="1.6" stroke-linejoin="round" fill="none"/>
+            </svg>
+          </div>
+          <span>Deal</span>
+        </div>
+        <div class="tab">
+          <div class="ti">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <circle cx="9" cy="9" r="3.2" stroke="rgba(255,255,255,0.55)" stroke-width="1.6"/>
+              <circle cx="17" cy="11" r="2.4" stroke="rgba(255,255,255,0.55)" stroke-width="1.6"/>
+              <path d="M3 19c0-3 3-5 6-5s6 2 6 5" stroke="rgba(255,255,255,0.55)" stroke-width="1.6" stroke-linecap="round"/>
+              <path d="M14 19c.5-2 2.5-3 4-3s3 1 3 3" stroke="rgba(255,255,255,0.55)" stroke-width="1.6" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <span>Community</span>
+        </div>
+        <div class="tab">
+          <div class="ti">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <path d="M2 9 12 4l10 5-10 5z" stroke="rgba(255,255,255,0.55)" stroke-width="1.6" stroke-linejoin="round"/>
+              <path d="M6 11v5c0 1.5 3 3 6 3s6-1.5 6-3v-5" stroke="rgba(255,255,255,0.55)" stroke-width="1.6"/>
+              <path d="M21 9v5" stroke="rgba(255,255,255,0.55)" stroke-width="1.6" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <span>Akkademy</span>
+        </div>
+      </div>
+
+      <div class="home-indicator"></div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
