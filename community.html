@@ -1,0 +1,480 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<title>Akka — Community (demo)</title>
+<link rel="preconnect" href="https://api.fontshare.com" />
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=satoshi@300,400,500,700,900&display=swap" />
+<style>
+:root {
+  --akka-dark-green:      #0C2A24;
+  --akka-highlight-green: #3DDC97;
+  --font-display: "Satoshi", "Inter", system-ui, sans-serif;
+  --font-body:    "Satoshi", "Inter", system-ui, sans-serif;
+}
+*, *::before, *::after { box-sizing: border-box; }
+html, body {
+  margin: 0; padding: 0;
+  min-height: 100vh; background: #f0f0ec;
+  font-family: var(--font-body); -webkit-font-smoothing: antialiased;
+  display: flex; align-items: center; justify-content: center;
+  padding: 48px 20px;
+}
+
+/* ---- Phone frame ---- */
+.stage { position: relative; width: 390px; height: 844px; }
+.phone {
+  position: relative; width: 390px; height: 844px;
+  border-radius: 54px; background: #1d1f22; padding: 11px;
+  box-shadow:
+    0 60px 80px -30px rgba(20,30,40,0.22),
+    0 25px 50px -20px rgba(20,30,40,0.14),
+    0 0 0 1px rgba(255,255,255,0.06) inset;
+}
+.screen {
+  width: 100%; height: 100%; border-radius: 44px; overflow: hidden;
+  position: relative; background: var(--akka-dark-green); color: #fff;
+}
+.notch { position: absolute; top: 11px; left: 50%; transform: translateX(-50%); width: 162px; height: 32px; background: #1d1f22; border-radius: 0 0 22px 22px; z-index: 30; }
+.notch::after { content:""; position:absolute; right:26px; top:10px; width:11px; height:11px; border-radius:50%; background: radial-gradient(circle at 35% 35%, #2a3540 0%, #0a0e14 70%); }
+.notch::before { content:""; position:absolute; left:38px; top:13px; width:50px; height:5px; background:#0a0e14; border-radius:4px; }
+.btn-side { position: absolute; background: #1d1f22; width: 3px; }
+.btn-side.silent { left: -3px; top: 110px; height: 32px; border-radius: 2px 0 0 2px; }
+.btn-side.vol-up { left: -3px; top: 165px; height: 60px; border-radius: 2px 0 0 2px; }
+.btn-side.vol-dn { left: -3px; top: 235px; height: 60px; border-radius: 2px 0 0 2px; }
+.btn-side.power  { right: -3px; top: 200px; height: 96px; border-radius: 0 2px 2px 0; }
+
+/* ---- Status bar ---- */
+.statusbar {
+  position: relative; z-index: 5; height: 54px; padding: 18px 30px 0;
+  display: flex; align-items: center; justify-content: space-between;
+  color: #fff;
+  font-family: -apple-system, "SF Pro Text", system-ui, sans-serif;
+  font-weight: 600; font-size: 16px; letter-spacing: -0.2px;
+}
+.statusbar .icons { display: flex; align-items: center; gap: 6px; }
+
+/* ---- Content ---- */
+.content {
+  position: absolute; inset: 0; padding-top: 54px;
+  overflow: hidden; display: flex; flex-direction: column;
+}
+
+/* ---- Top tabs ---- */
+.top-tabs {
+  display: flex; gap: 10px;
+  padding: 14px 22px 16px; align-items: center;
+}
+.tt {
+  padding: 12px 22px; border-radius: 999px;
+  font-size: 15px; font-weight: 700;
+  color: rgba(255,255,255,0.55); letter-spacing: -0.2px;
+  background: transparent; position: relative; cursor: pointer;
+}
+.tt.active { background: var(--akka-highlight-green); color: var(--akka-dark-green); }
+.tt .badge {
+  position: absolute; top: -2px; right: -4px;
+  min-width: 18px; height: 18px;
+  background: #E5614C; color: #fff;
+  font-size: 11px; font-weight: 700; border-radius: 999px;
+  display: flex; align-items: center; justify-content: center;
+  padding: 0 5px; line-height: 1;
+  border: 2px solid var(--akka-dark-green);
+}
+
+/* ---- Sub topics ---- */
+.topics {
+  display: flex; gap: 10px; padding: 0 22px 16px;
+  overflow-x: auto; scrollbar-width: none;
+}
+.topics::-webkit-scrollbar { display: none; }
+.topic {
+  padding: 8px 18px; border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.10);
+  color: rgba(255,255,255,0.55);
+  font-size: 13px; font-weight: 600; letter-spacing: -0.1px;
+  flex-shrink: 0; cursor: pointer;
+}
+.topic.active { color: var(--akka-highlight-green); border-color: rgba(61,220,151,0.4); }
+
+/* ---- Meta row ---- */
+.meta-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 22px 14px;
+  color: rgba(255,255,255,0.45); font-size: 13px; font-weight: 500; letter-spacing: -0.1px;
+}
+.meta-left { display: flex; align-items: center; gap: 8px; }
+.pos-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--akka-highlight-green); }
+.meta-row .pos  { color: #fff; font-weight: 600; }
+.meta-row .vote { color: var(--akka-highlight-green); font-weight: 600; }
+.meta-row .sep  { color: rgba(255,255,255,0.25); }
+.sort { display: flex; align-items: center; gap: 4px; color: #fff; font-weight: 600; cursor: pointer; }
+
+/* ---- Feed ---- */
+.feed {
+  flex: 1; overflow-y: auto; padding: 0 18px 12px;
+  scrollbar-width: none;
+}
+.feed::-webkit-scrollbar { display: none; }
+.day-stamp {
+  text-align: center; color: rgba(255,255,255,0.42);
+  font-size: 13px; font-weight: 500; margin: 8px 0 14px;
+}
+
+/* ---- Messages ---- */
+.msg { display: flex; gap: 10px; margin-bottom: 14px; }
+.msg.you { justify-content: flex-end; }
+.msg .av {
+  width: 32px; height: 32px; border-radius: 50%;
+  flex-shrink: 0; overflow: hidden;
+}
+.msg.you .av { display: none; }
+
+.av-laura { background: radial-gradient(ellipse at 50% 35%, #f4d4ba 0%, #c98a64 50%, #4a2818 100%); }
+.av-alex  { background: radial-gradient(ellipse at 50% 35%, #d9b48a 0%, #8a5a3a 50%, #2a1810 100%); }
+.av-daniel-ring {
+  background: radial-gradient(circle at 35% 35%, #6FE9B5 0%, #3DDC97 14%, #0E3B30 70%);
+  box-shadow: 0 0 0 1.5px rgba(61,220,151,0.5);
+  display: flex; align-items: center; justify-content: center;
+}
+.av-daniel-ring svg { width: 22px; height: 22px; }
+
+.bubble {
+  max-width: 270px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 16px; padding: 12px 14px 10px; color: #fff;
+}
+.msg.you .bubble {
+  background: rgba(61,220,151,0.10);
+  border-color: rgba(61,220,151,0.20);
+}
+
+.bub-head {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 10px; margin-bottom: 6px;
+}
+.bub-author {
+  display: flex; align-items: center; gap: 6px;
+  color: #fff; font-size: 14px; font-weight: 700; letter-spacing: -0.2px;
+}
+.msg.you .bub-author { color: var(--akka-highlight-green); }
+.flag { font-size: 13px; line-height: 1; }
+.karma {
+  display: inline-flex; align-items: center; gap: 3px;
+  background: rgba(61,220,151,0.12); color: var(--akka-highlight-green);
+  font-size: 11px; font-weight: 700; padding: 3px 7px; border-radius: 6px; line-height: 1;
+}
+.role {
+  background: rgba(61,220,151,0.12); color: var(--akka-highlight-green);
+  font-size: 10px; font-weight: 700; padding: 3px 7px;
+  border-radius: 6px; line-height: 1; letter-spacing: 0.1px;
+}
+.bub-time { color: rgba(255,255,255,0.42); font-size: 12px; font-weight: 500; }
+.bub-text {
+  color: #fff; font-size: 14px; font-weight: 500;
+  line-height: 1.45; letter-spacing: -0.2px;
+}
+.bub-foot {
+  margin-top: 8px; display: flex; align-items: center; justify-content: space-between;
+  color: rgba(255,255,255,0.38); font-size: 11px; font-weight: 500;
+}
+.upvotes {
+  display: inline-flex; align-items: center; gap: 4px;
+  color: var(--akka-highlight-green); font-weight: 700; font-size: 12px;
+}
+
+/* ---- Composer ---- */
+.composer {
+  padding: 12px 18px 18px;
+  display: flex; align-items: center; gap: 10px;
+  border-top: 1px solid rgba(255,255,255,0.05);
+  background: var(--akka-dark-green);
+}
+.composer input {
+  flex: 1; height: 48px; border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: transparent; color: rgba(255,255,255,0.45);
+  padding: 0 22px; font-size: 14px; font-family: var(--font-body); letter-spacing: -0.2px;
+}
+.composer input::placeholder { color: rgba(255,255,255,0.35); }
+.composer input:focus { outline: none; border-color: rgba(61,220,151,0.4); color: #fff; }
+.composer .send {
+  width: 48px; height: 48px; border-radius: 50%;
+  background: var(--akka-highlight-green); color: var(--akka-dark-green);
+  border: none; display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; cursor: pointer;
+}
+.composer .send:hover { background: #58E3A6; }
+
+/* ---- Tab bar ---- */
+.tabbar {
+  position: absolute; bottom: 0; left: 0; right: 0; height: 92px;
+  background: var(--akka-dark-green); border-top: 1px solid rgba(255,255,255,0.06);
+  display: flex; align-items: flex-start; justify-content: space-around;
+  padding: 12px 14px 0; z-index: 10;
+}
+.tab { display: flex; flex-direction: column; align-items: center; gap: 6px; color: rgba(255,255,255,0.55); font-size: 11px; font-weight: 500; flex: 1; position: relative; }
+.tab .ti { width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; }
+.tab.active { color: var(--akka-highlight-green); font-weight: 600; }
+.tab .tab-dot { position: absolute; top: 0; left: calc(50% + 4px); width: 7px; height: 7px; border-radius: 50%; background: #E5614C; border: 2px solid var(--akka-dark-green); }
+
+.home-indicator {
+  position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%);
+  width: 134px; height: 5px; background: rgba(255,255,255,0.85);
+  border-radius: 999px; z-index: 20;
+}
+</style>
+</head>
+<body>
+
+<div class="stage">
+  <div class="phone">
+    <span class="btn-side silent"></span>
+    <span class="btn-side vol-up"></span>
+    <span class="btn-side vol-dn"></span>
+    <span class="btn-side power"></span>
+
+    <div class="screen" data-screen="Akka Community">
+      <div class="notch"></div>
+
+      <!-- Status bar -->
+      <div class="statusbar">
+        <span>12:22</span>
+        <span class="icons">
+          <svg width="18" height="11" viewBox="0 0 18 11" fill="none">
+            <rect x="0" y="7" width="3" height="4" rx="0.6" fill="#fff"/>
+            <rect x="5" y="5" width="3" height="6" rx="0.6" fill="#fff"/>
+            <rect x="10" y="2.5" width="3" height="8.5" rx="0.6" fill="#fff"/>
+            <rect x="15" y="0" width="3" height="11" rx="0.6" fill="#fff"/>
+          </svg>
+          <svg width="16" height="11" viewBox="0 0 16 11" fill="none">
+            <path d="M8 2.6c2.1 0 4 .8 5.4 2.2l1-1A8 8 0 0 0 8 1.4 8 8 0 0 0 1.6 3.8l1 1A7.6 7.6 0 0 1 8 2.6Z" fill="#fff"/>
+            <path d="M8 6c1.3 0 2.4.5 3.3 1.3l1-1A6 6 0 0 0 8 4.6 6 6 0 0 0 3.7 6.3l1 1A4.7 4.7 0 0 1 8 6Z" fill="#fff"/>
+            <circle cx="8" cy="9.6" r="1.4" fill="#fff"/>
+          </svg>
+          <svg width="26" height="12" viewBox="0 0 26 12" fill="none">
+            <rect x="0.5" y="0.5" width="22" height="11" rx="3" stroke="#fff" stroke-opacity="0.5" fill="none"/>
+            <rect x="2" y="2" width="19" height="8" rx="1.5" fill="#fff"/>
+            <path d="M24 4v4c.6-.2 1-.7 1-1.4V5.4c0-.7-.4-1.2-1-1.4Z" fill="#fff" fill-opacity="0.5"/>
+          </svg>
+        </span>
+      </div>
+
+      <div class="content">
+
+        <!-- Top tabs: Groups · Messages · Events -->
+        <div class="top-tabs">
+          <div class="tt active">Groups</div>
+          <div class="tt">
+            Messages
+            <span class="badge">3</span>
+          </div>
+          <div class="tt">Events</div>
+        </div>
+
+        <!-- Sub topics -->
+        <div class="topics">
+          <div class="topic">General</div>
+          <div class="topic active">Praxis</div>
+          <div class="topic">Support</div>
+        </div>
+
+        <!-- Meta row -->
+        <div class="meta-row">
+          <div class="meta-left">
+            <span class="pos-dot"></span>
+            <span class="pos">73% positive</span>
+            <span class="sep">·</span>
+            <span>847 members</span>
+            <span class="sep">·</span>
+            <span class="vote">Vote</span>
+          </div>
+          <div class="sort">
+            New
+            <svg width="12" height="12" viewBox="0 0 16 16" fill="none">
+              <path d="m4 6 4 4 4-4" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        </div>
+
+        <!-- Feed -->
+        <div class="feed">
+          <div class="day-stamp">Today</div>
+
+          <!-- Laura T. -->
+          <div class="msg">
+            <div class="av av-laura"></div>
+            <div class="bubble">
+              <div class="bub-head">
+                <div class="bub-author">
+                  Laura T.
+                  <span class="flag">🇫🇷</span>
+                  <span class="karma">★ 1.1K</span>
+                </div>
+                <span class="bub-time">8:50 AM</span>
+              </div>
+              <div class="bub-text">The deal memo mentions 47 enterprise clients. Anyone know the retention rate?</div>
+              <div class="bub-foot">
+                <span>Seen by 892</span>
+                <span class="upvotes">
+                  <svg width="11" height="11" viewBox="0 0 16 16" fill="none">
+                    <path d="M8 3 L3 9 h3 v4 h4 v-4 h3 z" fill="#3DDC97"/>
+                  </svg>
+                  12
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Daniel (AI Coach) -->
+          <div class="msg">
+            <div class="av av-daniel-ring">
+              <svg viewBox="0 0 24 24">
+                <path d="M5 24 V20 c0-2 2-3.5 6-3.5 s6 1.5 6 3.5 v4 z" fill="#0a0a0a"/>
+                <path d="M9 18 l3 3 l3-3 v6 h-6 z" fill="#fff"/>
+                <path d="M12 19 l-1 1 l1 3 l1-3 z" fill="#7B1E22"/>
+                <ellipse cx="12" cy="11" rx="5.5" ry="6" fill="#f7f5ef"/>
+                <path d="M7 9 q-1.2 3 0 6 q2-1 2.5-2.5 z" fill="#3DDC97"/>
+                <path d="M17 9 q1.2 3 0 6 q-2-1-2.5-2.5 z" fill="#3DDC97"/>
+                <path d="M12 4 l-1.2 3.5 h2.4 z" fill="#3DDC97"/>
+                <ellipse cx="12" cy="13" rx="2.4" ry="1.7" fill="#ebe6da"/>
+                <ellipse cx="10" cy="11" rx="0.6" ry="0.85" fill="#0a0a0a"/>
+                <ellipse cx="14" cy="11" rx="0.6" ry="0.85" fill="#0a0a0a"/>
+              </svg>
+            </div>
+            <div class="bubble">
+              <div class="bub-head">
+                <div class="bub-author">
+                  Daniel
+                  <span class="role">AI Coach</span>
+                </div>
+                <span class="bub-time">8:51 AM</span>
+              </div>
+              <div class="bub-text">Based on the deal memo, Praxis reports 95% net revenue retention. That's strong for enterprise SaaS — above the 90% benchmark.</div>
+              <div class="bub-foot">
+                <span>Seen by 756</span>
+                <span class="upvotes">
+                  <svg width="11" height="11" viewBox="0 0 16 16" fill="none">
+                    <path d="M8 3 L3 9 h3 v4 h4 v-4 h3 z" fill="#3DDC97"/>
+                  </svg>
+                  47
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- You -->
+          <div class="msg you">
+            <div class="bubble">
+              <div class="bub-head">
+                <div class="bub-author">You</div>
+                <span class="bub-time">9:02 AM</span>
+              </div>
+              <div class="bub-text">Solid NRR. How does their churn compare to Watershed at the same stage?</div>
+              <div class="bub-foot">
+                <span>Seen by 534</span>
+                <span class="upvotes">
+                  <svg width="11" height="11" viewBox="0 0 16 16" fill="none">
+                    <path d="M8 3 L3 9 h3 v4 h4 v-4 h3 z" fill="#3DDC97"/>
+                  </svg>
+                  8
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Alex P. -->
+          <div class="msg">
+            <div class="av av-alex"></div>
+            <div class="bubble">
+              <div class="bub-head">
+                <div class="bub-author">
+                  Alex P.
+                  <span class="flag">🇩🇪</span>
+                  <span class="karma">★ 340</span>
+                </div>
+                <span class="bub-time">9:06 AM</span>
+              </div>
+              <div class="bub-text">€30M valuation for an AI company with €2.4M ARR growing 140% is…</div>
+            </div>
+          </div>
+
+          <!-- spacer for tab bar -->
+          <div style="height: 92px;"></div>
+        </div>
+
+        <!-- Composer -->
+        <div class="composer" style="margin-bottom: 92px;">
+          <input type="text" placeholder="Share your take…" />
+          <button class="send" aria-label="Send">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <path d="M21.5 3.2 2.7 10.6c-.9.4-.8 1.6.1 1.9l7 2.4 2.5 7c.3.9 1.5 1 1.9.1L21.6 3.3Z" stroke="#0C2A24" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round" fill="none"/>
+              <path d="m9.8 14.9 4.3-4.3" stroke="#0C2A24" stroke-width="1.8" stroke-linecap="round"/>
+            </svg>
+          </button>
+        </div>
+
+      </div>
+
+      <!-- Tab bar -->
+      <div class="tabbar">
+        <div class="tab">
+          <div class="ti">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <path d="M12 3 3 10v11h6v-7h6v7h6V10z" stroke="rgba(255,255,255,0.55)" stroke-width="1.6" stroke-linejoin="round" fill="none"/>
+            </svg>
+          </div>
+          <span>Home</span>
+        </div>
+        <div class="tab">
+          <div class="ti">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <rect x="4" y="14" width="3.5" height="6" rx="1" fill="rgba(255,255,255,0.55)"/>
+              <rect x="10.25" y="9" width="3.5" height="11" rx="1" fill="rgba(255,255,255,0.55)"/>
+              <rect x="16.5" y="4" width="3.5" height="16" rx="1" fill="rgba(255,255,255,0.55)"/>
+            </svg>
+          </div>
+          <span>Portfolio</span>
+        </div>
+        <div class="tab">
+          <div class="ti">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <path d="M12 2c4 3 6 7 6 11l-1 6h-10l-1-6c0-4 2-8 6-11Z" stroke="rgba(255,255,255,0.7)" stroke-width="1.6" stroke-linejoin="round"/>
+              <circle cx="12" cy="10" r="2" stroke="rgba(255,255,255,0.7)" stroke-width="1.6"/>
+              <path d="m7 17-2 4 4-1M17 17l2 4-4-1" stroke="rgba(255,255,255,0.7)" stroke-width="1.6" stroke-linejoin="round" fill="none"/>
+            </svg>
+          </div>
+          <span>Deal</span>
+        </div>
+        <div class="tab active">
+          <div class="ti">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <circle cx="9" cy="9" r="3.2" stroke="#3DDC97" stroke-width="1.6"/>
+              <circle cx="17" cy="11" r="2.4" stroke="#3DDC97" stroke-width="1.6"/>
+              <path d="M3 19c0-3 3-5 6-5s6 2 6 5" stroke="#3DDC97" stroke-width="1.6" stroke-linecap="round"/>
+              <path d="M14 19c.5-2 2.5-3 4-3s3 1 3 3" stroke="#3DDC97" stroke-width="1.6" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <span>Community</span>
+          <span class="tab-dot"></span>
+        </div>
+        <div class="tab">
+          <div class="ti">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <path d="M2 9 12 4l10 5-10 5z" stroke="rgba(255,255,255,0.55)" stroke-width="1.6" stroke-linejoin="round"/>
+              <path d="M6 11v5c0 1.5 3 3 6 3s6-1.5 6-3v-5" stroke="rgba(255,255,255,0.55)" stroke-width="1.6"/>
+              <path d="M21 9v5" stroke="rgba(255,255,255,0.55)" stroke-width="1.6" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <span>Akkademy</span>
+        </div>
+      </div>
+
+      <div class="home-indicator"></div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
