@@ -9,8 +9,7 @@
 <style>
 *, *::before, *::after { box-sizing: border-box; }
 html, body {
-  margin: 0; padding: 0;
-  min-height: 100vh;
+  margin: 0; padding: 0; min-height: 100vh;
   background: #f0f0ec;
   font-family: "Satoshi", "Inter", system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -21,15 +20,9 @@ html, body {
 .phone {
   position: relative; width: 390px; height: 844px;
   border-radius: 54px; background: #1d1f22; padding: 11px;
-  box-shadow:
-    0 60px 80px -30px rgba(20,30,40,0.22),
-    0 25px 50px -20px rgba(20,30,40,0.14),
-    0 0 0 1px rgba(255,255,255,0.06) inset;
+  box-shadow: 0 60px 80px -30px rgba(20,30,40,0.22), 0 25px 50px -20px rgba(20,30,40,0.14), 0 0 0 1px rgba(255,255,255,0.06) inset;
 }
-.screen {
-  width: 100%; height: 100%; border-radius: 44px;
-  overflow: hidden; position: relative; background: #0C2A24;
-}
+.screen { width: 100%; height: 100%; border-radius: 44px; overflow: hidden; position: relative; background: #0C2A24; }
 .btn-side { position: absolute; background: #1d1f22; width: 3px; }
 .btn-side.silent { left: -3px; top: 110px; height: 32px; border-radius: 2px 0 0 2px; }
 .btn-side.vol-up { left: -3px; top: 165px; height: 60px; border-radius: 2px 0 0 2px; }
@@ -59,24 +52,16 @@ const SCREENS = {
   background: #0C2A24; color: #fff;
   -webkit-font-smoothing: antialiased;
   font-family: "Satoshi", "Inter", system-ui, sans-serif;
-}
-.tab { cursor: pointer; }
-.tabbar .tab { cursor: pointer; }
-
-/* ============================================================
-   AKKA DESIGN SYSTEM — Color & Type Tokens
-   ============================================================ */
-:root {
-  --akka-dark-green:       #0C2A24;
-  --akka-dark-green-deep:  #081E1A;
-  --akka-dark-green-soft:  #123530;
-  --akka-highlight-green:  #3DDC97;
-  --akka-highlight-green-2:#58E3A6;
-  --akka-mid-green:        #1F7A5A;
-  --akka-deep-green:       #0E3B30;
-  --akka-cream:            #EDECE4;
-  --akka-white:            #FFFFFF;
-  --akka-black:            #0A0A0A;
+  --akka-dark-green: #0C2A24;
+  --akka-dark-green-deep: #081E1A;
+  --akka-dark-green-soft: #123530;
+  --akka-highlight-green: #3DDC97;
+  --akka-highlight-green-2: #58E3A6;
+  --akka-mid-green: #1F7A5A;
+  --akka-deep-green: #0E3B30;
+  --akka-cream: #EDECE4;
+  --akka-white: #FFFFFF;
+  --akka-black: #0A0A0A;
   --fg-1: #ffffff;
   --fg-2: rgba(255,255,255,0.72);
   --fg-3: rgba(255,255,255,0.48);
@@ -90,12 +75,18 @@ const SCREENS = {
   --divider: rgba(255,255,255,0.08);
   --success: #3DDC97;
   --warning: #F2B84B;
-  --danger:  #E5614C;
-  --info:    #6AB4D8;
+  --danger: #E5614C;
+  --info: #6AB4D8;
   --r-pill: 999px;
-  --font-display: "Satoshi", "Inter", system-ui, sans-serif;
-  --font-body:    "Satoshi", "Inter", system-ui, sans-serif;
+  --font-display: "Satoshi","Inter",system-ui,sans-serif;
+  --font-body: "Satoshi","Inter",system-ui,sans-serif;
 }
+.tab { cursor: pointer; }
+
+/* ============================================================
+   AKKA DESIGN SYSTEM — Color & Type Tokens
+   ============================================================ */
+
 
 /* ============================================================
    Reset & Base
@@ -798,7 +789,7 @@ html, body {
           </div>
           <span>Home</span>
         </div>
-        <div class="tab" onclick="window.navigate('portfolio')" style="cursor:pointer">
+        <div class="tab" onclick="window.navigate('portfolio')">
           <div class="ti">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
               <rect x="4" y="14" width="3.5" height="6" rx="1" fill="rgba(255,255,255,0.55)"/>
@@ -808,7 +799,7 @@ html, body {
           </div>
           <span>Portfolio</span>
         </div>
-        <div class="tab" onclick="window.navigate('deal_popup')" style="cursor:pointer">
+        <div class="tab" onclick="window.navigate('deal_popup')">
           <div class="ti">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
               <path d="M12 2c4 3 6 7 6 11l-1 6h-10l-1-6c0-4 2-8 6-11Z" stroke="rgba(255,255,255,0.7)" stroke-width="1.6" stroke-linejoin="round"/>
@@ -818,7 +809,7 @@ html, body {
           </div>
           <span>Deal</span>
         </div>
-        <div class="tab" onclick="window.navigate('community')" style="cursor:pointer">
+        <div class="tab" onclick="window.navigate('community')">
           <div class="ti">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
               <circle cx="9" cy="9" r="3.2" stroke="rgba(255,255,255,0.55)" stroke-width="1.6"/>
@@ -830,7 +821,7 @@ html, body {
           <span>Community</span>
           <span class="tab-dot"></span>
         </div>
-        <div class="tab" onclick="window.navigate('akkademy')" style="cursor:pointer">
+        <div class="tab" onclick="window.navigate('akkademy')">
           <div class="ti">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
               <path d="M2 9 12 4l10 5-10 5z" stroke="rgba(255,255,255,0.55)" stroke-width="1.6" stroke-linejoin="round"/>
@@ -850,21 +841,38 @@ html, body {
   background: #0C2A24; color: #fff;
   -webkit-font-smoothing: antialiased;
   font-family: "Satoshi", "Inter", system-ui, sans-serif;
-}
-.tab { cursor: pointer; }
-.tabbar .tab { cursor: pointer; }
-
-:root {
-  --akka-dark-green:       #0C2A24;
-  --akka-dark-green-soft:  #123530;
-  --akka-highlight-green:  #3DDC97;
+  --akka-dark-green: #0C2A24;
+  --akka-dark-green-deep: #081E1A;
+  --akka-dark-green-soft: #123530;
+  --akka-highlight-green: #3DDC97;
+  --akka-highlight-green-2: #58E3A6;
+  --akka-mid-green: #1F7A5A;
+  --akka-deep-green: #0E3B30;
+  --akka-cream: #EDECE4;
+  --akka-white: #FFFFFF;
+  --akka-black: #0A0A0A;
   --fg-1: #ffffff;
   --fg-2: rgba(255,255,255,0.72);
   --fg-3: rgba(255,255,255,0.48);
   --fg-accent: #3DDC97;
-  --font-display: "Satoshi", "Inter", system-ui, sans-serif;
-  --font-body:    "Satoshi", "Inter", system-ui, sans-serif;
+  --fg-1-inv: #0C2A24;
+  --fg-2-inv: #2B4842;
+  --fg-3-inv: #6B7B76;
+  --bg-page: #0C2A24;
+  --bg-surface: #123530;
+  --border-on-dark: rgba(255,255,255,0.14);
+  --divider: rgba(255,255,255,0.08);
+  --success: #3DDC97;
+  --warning: #F2B84B;
+  --danger: #E5614C;
+  --info: #6AB4D8;
+  --r-pill: 999px;
+  --font-display: "Satoshi","Inter",system-ui,sans-serif;
+  --font-body: "Satoshi","Inter",system-ui,sans-serif;
 }
+.tab { cursor: pointer; }
+
+
 
 *, *::before, *::after { box-sizing: border-box; }
 html, body {
@@ -1275,7 +1283,7 @@ html, body {
 
       <!-- Tab bar -->
       <div class="tabbar">
-        <div class="tab" onclick="window.navigate('home')" style="cursor:pointer">
+        <div class="tab" onclick="window.navigate('home')">
           <div class="ti">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
               <path d="M12 3 3 10v11h6v-7h6v7h6V10z" stroke="rgba(255,255,255,0.55)" stroke-width="1.6" stroke-linejoin="round" fill="none"/>
@@ -1293,7 +1301,7 @@ html, body {
           </div>
           <span>Portfolio</span>
         </div>
-        <div class="tab" onclick="window.navigate('deal_popup')" style="cursor:pointer">
+        <div class="tab" onclick="window.navigate('deal_popup')">
           <div class="ti">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
               <path d="M12 2c4 3 6 7 6 11l-1 6h-10l-1-6c0-4 2-8 6-11Z" stroke="rgba(255,255,255,0.7)" stroke-width="1.6" stroke-linejoin="round"/>
@@ -1303,7 +1311,7 @@ html, body {
           </div>
           <span>Deal</span>
         </div>
-        <div class="tab" onclick="window.navigate('community')" style="cursor:pointer">
+        <div class="tab" onclick="window.navigate('community')">
           <div class="ti">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
               <circle cx="9" cy="9" r="3.2" stroke="rgba(255,255,255,0.55)" stroke-width="1.6"/>
@@ -1314,7 +1322,7 @@ html, body {
           </div>
           <span>Community</span>
         </div>
-        <div class="tab" onclick="window.navigate('akkademy')" style="cursor:pointer">
+        <div class="tab" onclick="window.navigate('akkademy')">
           <div class="ti">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
               <path d="M2 9 12 4l10 5-10 5z" stroke="rgba(255,255,255,0.55)" stroke-width="1.6" stroke-linejoin="round"/>
@@ -1334,16 +1342,38 @@ html, body {
   background: #0C2A24; color: #fff;
   -webkit-font-smoothing: antialiased;
   font-family: "Satoshi", "Inter", system-ui, sans-serif;
+  --akka-dark-green: #0C2A24;
+  --akka-dark-green-deep: #081E1A;
+  --akka-dark-green-soft: #123530;
+  --akka-highlight-green: #3DDC97;
+  --akka-highlight-green-2: #58E3A6;
+  --akka-mid-green: #1F7A5A;
+  --akka-deep-green: #0E3B30;
+  --akka-cream: #EDECE4;
+  --akka-white: #FFFFFF;
+  --akka-black: #0A0A0A;
+  --fg-1: #ffffff;
+  --fg-2: rgba(255,255,255,0.72);
+  --fg-3: rgba(255,255,255,0.48);
+  --fg-accent: #3DDC97;
+  --fg-1-inv: #0C2A24;
+  --fg-2-inv: #2B4842;
+  --fg-3-inv: #6B7B76;
+  --bg-page: #0C2A24;
+  --bg-surface: #123530;
+  --border-on-dark: rgba(255,255,255,0.14);
+  --divider: rgba(255,255,255,0.08);
+  --success: #3DDC97;
+  --warning: #F2B84B;
+  --danger: #E5614C;
+  --info: #6AB4D8;
+  --r-pill: 999px;
+  --font-display: "Satoshi","Inter",system-ui,sans-serif;
+  --font-body: "Satoshi","Inter",system-ui,sans-serif;
 }
 .tab { cursor: pointer; }
-.tabbar .tab { cursor: pointer; }
 
-:root {
-  --akka-dark-green:      #0C2A24;
-  --akka-highlight-green: #3DDC97;
-  --font-display: "Satoshi", "Inter", system-ui, sans-serif;
-  --font-body:    "Satoshi", "Inter", system-ui, sans-serif;
-}
+
 *, *::before, *::after { box-sizing: border-box; }
 html, body {
   margin: 0; padding: 0;
@@ -1739,17 +1769,38 @@ html, body {
   background: #0C2A24; color: #fff;
   -webkit-font-smoothing: antialiased;
   font-family: "Satoshi", "Inter", system-ui, sans-serif;
+  --akka-dark-green: #0C2A24;
+  --akka-dark-green-deep: #081E1A;
+  --akka-dark-green-soft: #123530;
+  --akka-highlight-green: #3DDC97;
+  --akka-highlight-green-2: #58E3A6;
+  --akka-mid-green: #1F7A5A;
+  --akka-deep-green: #0E3B30;
+  --akka-cream: #EDECE4;
+  --akka-white: #FFFFFF;
+  --akka-black: #0A0A0A;
+  --fg-1: #ffffff;
+  --fg-2: rgba(255,255,255,0.72);
+  --fg-3: rgba(255,255,255,0.48);
+  --fg-accent: #3DDC97;
+  --fg-1-inv: #0C2A24;
+  --fg-2-inv: #2B4842;
+  --fg-3-inv: #6B7B76;
+  --bg-page: #0C2A24;
+  --bg-surface: #123530;
+  --border-on-dark: rgba(255,255,255,0.14);
+  --divider: rgba(255,255,255,0.08);
+  --success: #3DDC97;
+  --warning: #F2B84B;
+  --danger: #E5614C;
+  --info: #6AB4D8;
+  --r-pill: 999px;
+  --font-display: "Satoshi","Inter",system-ui,sans-serif;
+  --font-body: "Satoshi","Inter",system-ui,sans-serif;
 }
 .tab { cursor: pointer; }
-.tabbar .tab { cursor: pointer; }
 
-:root {
-  --akka-dark-green:      #0C2A24;
-  --akka-highlight-green: #3DDC97;
-  --warning: #F2B84B;
-  --font-display: "Satoshi", "Inter", system-ui, sans-serif;
-  --font-body:    "Satoshi", "Inter", system-ui, sans-serif;
-}
+
 *, *::before, *::after { box-sizing: border-box; }
 html, body {
   margin: 0; padding: 0;
@@ -2067,16 +2118,38 @@ html, body {
   background: #0C2A24; color: #fff;
   -webkit-font-smoothing: antialiased;
   font-family: "Satoshi", "Inter", system-ui, sans-serif;
+  --akka-dark-green: #0C2A24;
+  --akka-dark-green-deep: #081E1A;
+  --akka-dark-green-soft: #123530;
+  --akka-highlight-green: #3DDC97;
+  --akka-highlight-green-2: #58E3A6;
+  --akka-mid-green: #1F7A5A;
+  --akka-deep-green: #0E3B30;
+  --akka-cream: #EDECE4;
+  --akka-white: #FFFFFF;
+  --akka-black: #0A0A0A;
+  --fg-1: #ffffff;
+  --fg-2: rgba(255,255,255,0.72);
+  --fg-3: rgba(255,255,255,0.48);
+  --fg-accent: #3DDC97;
+  --fg-1-inv: #0C2A24;
+  --fg-2-inv: #2B4842;
+  --fg-3-inv: #6B7B76;
+  --bg-page: #0C2A24;
+  --bg-surface: #123530;
+  --border-on-dark: rgba(255,255,255,0.14);
+  --divider: rgba(255,255,255,0.08);
+  --success: #3DDC97;
+  --warning: #F2B84B;
+  --danger: #E5614C;
+  --info: #6AB4D8;
+  --r-pill: 999px;
+  --font-display: "Satoshi","Inter",system-ui,sans-serif;
+  --font-body: "Satoshi","Inter",system-ui,sans-serif;
 }
 .tab { cursor: pointer; }
-.tabbar .tab { cursor: pointer; }
 
-:root {
-  --akka-dark-green:      #0C2A24;
-  --akka-highlight-green: #3DDC97;
-  --font-display: "Satoshi", "Inter", system-ui, sans-serif;
-  --font-body:    "Satoshi", "Inter", system-ui, sans-serif;
-}
+
 *, *::before, *::after { box-sizing: border-box; }
 html, body {
   margin: 0; padding: 0;
@@ -2474,7 +2547,7 @@ html, body {
 
       <!-- Tab bar -->
       <div class="tabbar">
-        <div class="tab" onclick="window.navigate('home')" style="cursor:pointer">
+        <div class="tab" onclick="window.navigate('home')">
           <div class="ti">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
               <path d="M12 3 3 10v11h6v-7h6v7h6V10z" stroke="rgba(255,255,255,0.55)" stroke-width="1.6" stroke-linejoin="round" fill="none"/>
@@ -2482,7 +2555,7 @@ html, body {
           </div>
           <span>Home</span>
         </div>
-        <div class="tab" onclick="window.navigate('portfolio')" style="cursor:pointer">
+        <div class="tab" onclick="window.navigate('portfolio')">
           <div class="ti">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
               <rect x="4" y="14" width="3.5" height="6" rx="1" fill="rgba(255,255,255,0.55)"/>
@@ -2492,7 +2565,7 @@ html, body {
           </div>
           <span>Portfolio</span>
         </div>
-        <div class="tab" onclick="window.navigate('deal_popup')" style="cursor:pointer">
+        <div class="tab" onclick="window.navigate('deal_popup')">
           <div class="ti">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
               <path d="M12 2c4 3 6 7 6 11l-1 6h-10l-1-6c0-4 2-8 6-11Z" stroke="rgba(255,255,255,0.7)" stroke-width="1.6" stroke-linejoin="round"/>
@@ -2514,7 +2587,7 @@ html, body {
           <span>Community</span>
           <span class="tab-dot"></span>
         </div>
-        <div class="tab" onclick="window.navigate('akkademy')" style="cursor:pointer">
+        <div class="tab" onclick="window.navigate('akkademy')">
           <div class="ti">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
               <path d="M2 9 12 4l10 5-10 5z" stroke="rgba(255,255,255,0.55)" stroke-width="1.6" stroke-linejoin="round"/>
@@ -2534,17 +2607,38 @@ html, body {
   background: #0C2A24; color: #fff;
   -webkit-font-smoothing: antialiased;
   font-family: "Satoshi", "Inter", system-ui, sans-serif;
+  --akka-dark-green: #0C2A24;
+  --akka-dark-green-deep: #081E1A;
+  --akka-dark-green-soft: #123530;
+  --akka-highlight-green: #3DDC97;
+  --akka-highlight-green-2: #58E3A6;
+  --akka-mid-green: #1F7A5A;
+  --akka-deep-green: #0E3B30;
+  --akka-cream: #EDECE4;
+  --akka-white: #FFFFFF;
+  --akka-black: #0A0A0A;
+  --fg-1: #ffffff;
+  --fg-2: rgba(255,255,255,0.72);
+  --fg-3: rgba(255,255,255,0.48);
+  --fg-accent: #3DDC97;
+  --fg-1-inv: #0C2A24;
+  --fg-2-inv: #2B4842;
+  --fg-3-inv: #6B7B76;
+  --bg-page: #0C2A24;
+  --bg-surface: #123530;
+  --border-on-dark: rgba(255,255,255,0.14);
+  --divider: rgba(255,255,255,0.08);
+  --success: #3DDC97;
+  --warning: #F2B84B;
+  --danger: #E5614C;
+  --info: #6AB4D8;
+  --r-pill: 999px;
+  --font-display: "Satoshi","Inter",system-ui,sans-serif;
+  --font-body: "Satoshi","Inter",system-ui,sans-serif;
 }
 .tab { cursor: pointer; }
-.tabbar .tab { cursor: pointer; }
 
-:root {
-  --akka-dark-green:      #0C2A24;
-  --akka-highlight-green: #3DDC97;
-  --warning: #F2B84B;
-  --font-display: "Satoshi", "Inter", system-ui, sans-serif;
-  --font-body:    "Satoshi", "Inter", system-ui, sans-serif;
-}
+
 *, *::before, *::after { box-sizing: border-box; }
 html, body {
   margin: 0; padding: 0;
@@ -2911,16 +3005,38 @@ html, body {
   background: #0C2A24; color: #fff;
   -webkit-font-smoothing: antialiased;
   font-family: "Satoshi", "Inter", system-ui, sans-serif;
+  --akka-dark-green: #0C2A24;
+  --akka-dark-green-deep: #081E1A;
+  --akka-dark-green-soft: #123530;
+  --akka-highlight-green: #3DDC97;
+  --akka-highlight-green-2: #58E3A6;
+  --akka-mid-green: #1F7A5A;
+  --akka-deep-green: #0E3B30;
+  --akka-cream: #EDECE4;
+  --akka-white: #FFFFFF;
+  --akka-black: #0A0A0A;
+  --fg-1: #ffffff;
+  --fg-2: rgba(255,255,255,0.72);
+  --fg-3: rgba(255,255,255,0.48);
+  --fg-accent: #3DDC97;
+  --fg-1-inv: #0C2A24;
+  --fg-2-inv: #2B4842;
+  --fg-3-inv: #6B7B76;
+  --bg-page: #0C2A24;
+  --bg-surface: #123530;
+  --border-on-dark: rgba(255,255,255,0.14);
+  --divider: rgba(255,255,255,0.08);
+  --success: #3DDC97;
+  --warning: #F2B84B;
+  --danger: #E5614C;
+  --info: #6AB4D8;
+  --r-pill: 999px;
+  --font-display: "Satoshi","Inter",system-ui,sans-serif;
+  --font-body: "Satoshi","Inter",system-ui,sans-serif;
 }
 .tab { cursor: pointer; }
-.tabbar .tab { cursor: pointer; }
 
-:root {
-  --akka-dark-green:      #0C2A24;
-  --akka-highlight-green: #3DDC97;
-  --font-display: "Satoshi", "Inter", system-ui, sans-serif;
-  --font-body:    "Satoshi", "Inter", system-ui, sans-serif;
-}
+
 *, *::before, *::after { box-sizing: border-box; }
 html, body {
   margin: 0; padding: 0;
@@ -3307,13 +3423,13 @@ html, body {
 
       <!-- Tab bar -->
       <div class="tabbar">
-        <div class="tab" onclick="window.navigate('home')" style="cursor:pointer">
+        <div class="tab" onclick="window.navigate('home')">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
             <path d="M3 11 12 3 l9 8 v9 a2 2 0 0 1-2 2h-4 v-7 h-6 v7 H5 a2 2 0 0 1-2-2 z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
           </svg>
           <span class="label">Home</span>
         </div>
-        <div class="tab" onclick="window.navigate('portfolio')" style="cursor:pointer">
+        <div class="tab" onclick="window.navigate('portfolio')">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
             <rect x="4" y="14" width="3" height="6" rx="0.5" fill="currentColor"/>
             <rect x="10" y="9" width="3" height="11" rx="0.5" fill="currentColor"/>
@@ -3321,7 +3437,7 @@ html, body {
           </svg>
           <span class="label">Portfolio</span>
         </div>
-        <div class="tab" onclick="window.navigate('deal_popup')" style="cursor:pointer">
+        <div class="tab" onclick="window.navigate('deal_popup')">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
             <path d="M12 3 c2.5 3 4 6 4 9 0 2.5-1.5 4.5-4 5-2.5-.5-4-2.5-4-5 0-3 1.5-6 4-9z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
             <circle cx="12" cy="11" r="1.5" fill="currentColor"/>
@@ -3329,7 +3445,7 @@ html, body {
           </svg>
           <span class="label">Deal</span>
         </div>
-        <div class="tab" onclick="window.navigate('community')" style="cursor:pointer">
+        <div class="tab" onclick="window.navigate('community')">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
             <circle cx="9" cy="10" r="3" stroke="currentColor" stroke-width="1.6"/>
             <circle cx="16" cy="9" r="2.4" stroke="currentColor" stroke-width="1.6"/>
