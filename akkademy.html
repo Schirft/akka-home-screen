@@ -1,0 +1,458 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<title>Akka — Akkademy (demo)</title>
+<link rel="preconnect" href="https://api.fontshare.com" />
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=satoshi@300,400,500,700,900&display=swap" />
+<style>
+:root {
+  --akka-dark-green:      #0C2A24;
+  --akka-highlight-green: #3DDC97;
+  --font-display: "Satoshi", "Inter", system-ui, sans-serif;
+  --font-body:    "Satoshi", "Inter", system-ui, sans-serif;
+}
+*, *::before, *::after { box-sizing: border-box; }
+html, body {
+  margin: 0; padding: 0;
+  min-height: 100vh; background: #f0f0ec;
+  font-family: var(--font-body); -webkit-font-smoothing: antialiased;
+  display: flex; align-items: center; justify-content: center;
+  padding: 48px 20px;
+}
+
+/* ---- Phone frame ---- */
+.stage { position: relative; width: 390px; height: 844px; }
+.phone {
+  width: 390px; height: 844px; border-radius: 54px;
+  background: #1d1f22; padding: 11px; position: relative;
+  box-shadow:
+    0 60px 80px -30px rgba(20,30,40,0.22),
+    0 25px 50px -20px rgba(20,30,40,0.14),
+    0 0 0 1px rgba(255,255,255,0.06) inset;
+}
+.screen {
+  width: 100%; height: 100%; border-radius: 44px; overflow: hidden;
+  position: relative; background: var(--akka-dark-green); color: #fff;
+  display: flex; flex-direction: column;
+}
+.notch { position: absolute; top: 11px; left: 50%; transform: translateX(-50%); width: 162px; height: 32px; background: #1d1f22; border-radius: 0 0 22px 22px; z-index: 30; }
+.notch::after { content:""; position:absolute; right:26px; top:10px; width:11px; height:11px; border-radius:50%; background: radial-gradient(circle at 35% 35%, #2a3540 0%, #0a0e14 70%); }
+.notch::before { content:""; position:absolute; left:38px; top:13px; width:50px; height:5px; background:#0a0e14; border-radius:4px; }
+.btn-side { position: absolute; background: #1d1f22; width: 3px; }
+.btn-side.silent { left: -3px; top: 110px; height: 32px; border-radius: 2px 0 0 2px; }
+.btn-side.vol-up { left: -3px; top: 165px; height: 60px; border-radius: 2px 0 0 2px; }
+.btn-side.vol-dn { left: -3px; top: 235px; height: 60px; border-radius: 2px 0 0 2px; }
+.btn-side.power  { right: -3px; top: 200px; height: 96px; border-radius: 0 2px 2px 0; }
+
+/* ---- Status bar ---- */
+.statusbar {
+  flex: none; height: 54px; padding: 18px 30px 0;
+  display: flex; align-items: center; justify-content: space-between;
+  color: #fff;
+  font-family: -apple-system, "SF Pro Text", system-ui, sans-serif;
+  font-weight: 600; font-size: 16px; letter-spacing: -0.2px;
+}
+.statusbar .icons { display: flex; align-items: center; gap: 6px; }
+
+/* ---- Scrollable content ---- */
+.content {
+  flex: 1; min-height: 0;
+  overflow-y: auto; padding: 0 22px 12px;
+  scrollbar-width: none;
+}
+.content::-webkit-scrollbar { display: none; }
+
+/* ---- XP header row ---- */
+.xp-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 0 22px; gap: 14px;
+}
+.level-pill {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 8px 14px; border-radius: 999px;
+  background: rgba(61,220,151,0.10);
+  border: 1px solid rgba(61,220,151,0.22);
+  color: var(--akka-highlight-green);
+  font-size: 14px; font-weight: 700; letter-spacing: -0.1px;
+}
+.level-pill .star {
+  width: 18px; height: 18px; border-radius: 50%;
+  border: 1px solid var(--akka-highlight-green);
+  display: flex; align-items: center; justify-content: center;
+}
+.level-pill .dot { width: 4px; height: 4px; border-radius: 50%; background: currentColor; }
+.xp-prog {
+  flex: 1; max-width: 180px;
+  display: flex; flex-direction: column; align-items: flex-end; gap: 6px;
+}
+.xp-prog .label { color: rgba(255,255,255,0.55); font-size: 13px; font-weight: 500; }
+.xp-prog .bar { width: 100%; height: 4px; border-radius: 999px; background: rgba(255,255,255,0.10); overflow: hidden; }
+.xp-prog .bar > i { display: block; height: 100%; width: 62%; background: var(--akka-highlight-green); border-radius: 999px; }
+
+/* ---- Section heads ---- */
+.section-head {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 14px;
+}
+.section-head h2 {
+  margin: 0; color: #fff;
+  font-size: 22px; font-weight: 700; letter-spacing: -0.4px;
+  font-family: var(--font-display);
+}
+.streak {
+  display: inline-flex; align-items: center; gap: 6px;
+  color: #fff; font-size: 13px; font-weight: 600;
+}
+
+/* ---- Daily quiz card ---- */
+.quiz {
+  background: rgba(61,220,151,0.06);
+  border: 1px solid rgba(61,220,151,0.18);
+  border-radius: 18px; padding: 18px; margin-bottom: 26px;
+}
+.quiz-head {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  gap: 14px; margin-bottom: 18px;
+}
+.quiz-q {
+  color: #fff; font-size: 16px; font-weight: 700;
+  line-height: 1.35; letter-spacing: -0.2px;
+}
+.xp-badge {
+  flex-shrink: 0; padding: 5px 10px; border-radius: 8px;
+  background: rgba(61,220,151,0.14);
+  color: var(--akka-highlight-green); font-size: 12px; font-weight: 700;
+}
+.quiz-foot { display: flex; align-items: center; justify-content: space-between; }
+.quiz-meta { display: flex; flex-direction: column; gap: 8px; }
+.quiz-pips { display: flex; gap: 4px; }
+.quiz-pip { width: 24px; height: 4px; border-radius: 999px; background: rgba(255,255,255,0.10); }
+.quiz-pip.on { background: var(--akka-highlight-green); }
+.quiz-label { color: #fff; font-size: 13px; font-weight: 600; }
+.answer-btn {
+  padding: 10px 22px; border-radius: 999px;
+  background: var(--akka-highlight-green); color: var(--akka-dark-green);
+  font-size: 14px; font-weight: 700; border: none;
+  font-family: var(--font-body); cursor: pointer;
+}
+.answer-btn:hover { background: #58E3A6; }
+
+/* ---- Videos row ---- */
+.videos {
+  display: flex; gap: 12px; overflow-x: auto;
+  margin: 0 -22px 26px; padding: 0 22px;
+  scrollbar-width: none;
+}
+.videos::-webkit-scrollbar { display: none; }
+
+.video-card {
+  flex-shrink: 0; width: 200px; border-radius: 14px;
+  overflow: hidden; background: rgba(255,255,255,0.04);
+}
+.video-thumb {
+  height: 130px; position: relative; overflow: hidden;
+}
+/* Replace image-slot with CSS gradient backgrounds */
+.video-thumb .thumb-bg {
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, #1f8060 0%, #0e3b30 100%);
+}
+.video-thumb .thumb-bg.v2 {
+  background: linear-gradient(135deg, #1a5a8a 0%, #0a2a4a 100%);
+}
+.video-thumb .thumb-bg.v3 {
+  background: linear-gradient(135deg, #5b3a8a 0%, #2a1a4a 100%);
+}
+/* subtle dot grid on thumbs */
+.video-thumb .thumb-bg::after {
+  content: ""; position: absolute; inset: 0;
+  background-image: radial-gradient(rgba(255,255,255,0.08) 1px, transparent 1px);
+  background-size: 16px 16px;
+}
+.video-thumb .play {
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 40px; height: 40px; border-radius: 50%;
+  background: rgba(255,255,255,0.18);
+  border: 1.5px solid rgba(255,255,255,0.5);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 2; cursor: pointer;
+}
+.video-thumb .duration {
+  position: absolute; bottom: 8px; right: 8px;
+  background: rgba(0,0,0,0.65); color: #fff;
+  font-size: 11px; font-weight: 700;
+  padding: 3px 8px; border-radius: 6px; z-index: 2;
+}
+.video-info { padding: 12px 14px 14px; }
+.video-title { color: #fff; font-size: 15px; font-weight: 700; margin-bottom: 4px; letter-spacing: -0.2px; }
+.video-meta { display: flex; align-items: center; justify-content: space-between; }
+.video-cat  { color: rgba(255,255,255,0.5); font-size: 12px; font-weight: 500; }
+.video-xp   { color: var(--akka-highlight-green); font-size: 12px; font-weight: 700; }
+
+/* ---- Topics grid ---- */
+.topics-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 18px; }
+.topic-card {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.05);
+  border-radius: 16px; padding: 16px;
+}
+.topic-icon {
+  width: 38px; height: 38px; border-radius: 10px;
+  background: rgba(123,91,236,0.16);
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 12px;
+}
+.topic-name  { color: #fff; font-size: 16px; font-weight: 700; margin-bottom: 4px; letter-spacing: -0.2px; }
+.topic-meta  { color: rgba(255,255,255,0.45); font-size: 12px; font-weight: 500; margin-bottom: 12px; }
+.topic-bar   { height: 4px; border-radius: 999px; background: rgba(255,255,255,0.08); overflow: hidden; }
+.topic-bar > i { display: block; height: 100%; background: linear-gradient(90deg, #5B6FEC 0%, #B98AEC 100%); border-radius: 999px; }
+
+/* ---- Tab bar ---- */
+.tabbar {
+  flex: none; height: 88px; padding: 8px 16px 28px;
+  background: var(--akka-dark-green);
+  border-top: 1px solid rgba(255,255,255,0.04);
+  display: grid; grid-template-columns: repeat(5, 1fr);
+}
+.tab {
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  color: rgba(255,255,255,0.45); text-decoration: none; cursor: pointer;
+}
+.tab.active { color: var(--akka-highlight-green); }
+.tab .label { font-size: 11px; font-weight: 600; letter-spacing: -0.1px; }
+
+.home-indicator {
+  position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%);
+  width: 134px; height: 5px; background: rgba(255,255,255,0.85);
+  border-radius: 999px; z-index: 40;
+}
+</style>
+</head>
+<body>
+
+<div class="stage">
+  <div class="phone">
+    <span class="btn-side silent"></span>
+    <span class="btn-side vol-up"></span>
+    <span class="btn-side vol-dn"></span>
+    <span class="btn-side power"></span>
+
+    <div class="screen" data-screen="Akkademy">
+      <div class="notch"></div>
+
+      <!-- Status bar -->
+      <div class="statusbar">
+        <span>12:22</span>
+        <span class="icons">
+          <svg width="18" height="11" viewBox="0 0 18 11" fill="none">
+            <rect x="0" y="7" width="3" height="4" rx="0.6" fill="#fff"/>
+            <rect x="5" y="5" width="3" height="6" rx="0.6" fill="#fff"/>
+            <rect x="10" y="2.5" width="3" height="8.5" rx="0.6" fill="#fff"/>
+            <rect x="15" y="0" width="3" height="11" rx="0.6" fill="#fff"/>
+          </svg>
+          <svg width="16" height="11" viewBox="0 0 16 11" fill="none">
+            <path d="M8 2.6c2.1 0 4 .8 5.4 2.2l1-1A8 8 0 0 0 8 1.4 8 8 0 0 0 1.6 3.8l1 1A7.6 7.6 0 0 1 8 2.6Z" fill="#fff"/>
+            <path d="M8 6c1.3 0 2.4.5 3.3 1.3l1-1A6 6 0 0 0 8 4.6 6 6 0 0 0 3.7 6.3l1 1A4.7 4.7 0 0 1 8 6Z" fill="#fff"/>
+            <circle cx="8" cy="9.6" r="1.4" fill="#fff"/>
+          </svg>
+          <svg width="26" height="12" viewBox="0 0 26 12" fill="none">
+            <rect x="0.5" y="0.5" width="22" height="11" rx="3" stroke="#fff" stroke-opacity="0.5" fill="none"/>
+            <rect x="2" y="2" width="19" height="8" rx="1.5" fill="#fff"/>
+            <path d="M24 4v4c.6-.2 1-.7 1-1.4V5.4c0-.7-.4-1.2-1-1.4Z" fill="#fff" fill-opacity="0.5"/>
+          </svg>
+        </span>
+      </div>
+
+      <div class="content">
+
+        <!-- XP header -->
+        <div class="xp-row">
+          <div class="level-pill">
+            <span class="star">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="#3DDC97">
+                <path d="M12 2 l3 7 7 1 -5 5 1 7 -6-3 -6 3 1-7 -5-5 7-1z"/>
+              </svg>
+            </span>
+            Learner
+            <span class="dot"></span>
+            Lv2
+          </div>
+          <div class="xp-prog">
+            <span class="label">620 / 1000 XP</span>
+            <span class="bar"><i></i></span>
+          </div>
+        </div>
+
+        <!-- Daily quiz -->
+        <div class="section-head">
+          <h2>Daily quiz</h2>
+          <span class="streak">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+              <path d="M12 2c1 4 5 5 5 10a5 5 0 0 1-10 0c0-2 1-3 2-4-1 4 3 4 3 1 0-3-1-4 0-7Z" fill="#F2B84B"/>
+            </svg>
+            7 day streak
+          </span>
+        </div>
+
+        <div class="quiz">
+          <div class="quiz-head">
+            <div class="quiz-q">What is a revenue multiple in a series A valuation?</div>
+            <div class="xp-badge">+50 XP</div>
+          </div>
+          <div class="quiz-foot">
+            <div class="quiz-meta">
+              <div class="quiz-pips">
+                <span class="quiz-pip on"></span>
+                <span class="quiz-pip"></span>
+                <span class="quiz-pip"></span>
+              </div>
+              <div class="quiz-label">Q1 · Easy</div>
+            </div>
+            <button class="answer-btn">Answer</button>
+          </div>
+        </div>
+
+        <!-- Videos -->
+        <div class="section-head"><h2>Learn in 2 minutes</h2></div>
+
+        <div class="videos">
+          <!-- Cap table -->
+          <div class="video-card">
+            <div class="video-thumb">
+              <div class="thumb-bg"></div>
+              <span class="play">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="#fff"><path d="M8 5v14l11-7z"/></svg>
+              </span>
+              <span class="duration">2 min</span>
+            </div>
+            <div class="video-info">
+              <div class="video-title">Cap table</div>
+              <div class="video-meta">
+                <span class="video-cat">Equity & dilution</span>
+                <span class="video-xp">+80 XP</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Pre-IPO -->
+          <div class="video-card">
+            <div class="video-thumb">
+              <div class="thumb-bg v2"></div>
+              <span class="play">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="#fff"><path d="M8 5v14l11-7z"/></svg>
+              </span>
+              <span class="duration">3 min</span>
+            </div>
+            <div class="video-info">
+              <div class="video-title">Pre-IPO explained</div>
+              <div class="video-meta">
+                <span class="video-cat">Risk & Upside</span>
+                <span class="video-xp">+80 XP</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- SAFE notes -->
+          <div class="video-card">
+            <div class="video-thumb">
+              <div class="thumb-bg v3"></div>
+              <span class="play">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="#fff"><path d="M8 5v14l11-7z"/></svg>
+              </span>
+              <span class="duration">2 min</span>
+            </div>
+            <div class="video-info">
+              <div class="video-title">SAFE notes</div>
+              <div class="video-meta">
+                <span class="video-cat">Funding</span>
+                <span class="video-xp">+60 XP</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Topics -->
+        <div class="section-head"><h2>Topics</h2></div>
+
+        <div class="topics-grid">
+          <div class="topic-card">
+            <div class="topic-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                <circle cx="11" cy="11" r="6" stroke="#7B5BEC" stroke-width="1.8"/>
+                <path d="m20 20-4-4" stroke="#7B5BEC" stroke-width="1.8" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <div class="topic-name">Due diligence</div>
+            <div class="topic-meta">12 videos · 3 quizzes</div>
+            <div class="topic-bar"><i style="width:62%"></i></div>
+          </div>
+
+          <div class="topic-card">
+            <div class="topic-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                <rect x="4" y="14" width="3" height="6" rx="0.5" fill="#7B5BEC"/>
+                <rect x="9" y="10" width="3" height="10" rx="0.5" fill="#7B5BEC"/>
+                <rect x="14" y="6" width="3" height="14" rx="0.5" fill="#7B5BEC"/>
+                <path d="m4 11 5-5 4 3 6-7" stroke="#7B5BEC" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+              </svg>
+            </div>
+            <div class="topic-name">Valuation</div>
+            <div class="topic-meta">8 videos · 2 quizzes</div>
+            <div class="topic-bar"><i style="width:38%"></i></div>
+          </div>
+        </div>
+
+      </div><!-- /content -->
+
+      <!-- Tab bar -->
+      <div class="tabbar">
+        <div class="tab">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+            <path d="M3 11 12 3 l9 8 v9 a2 2 0 0 1-2 2h-4 v-7 h-6 v7 H5 a2 2 0 0 1-2-2 z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+          </svg>
+          <span class="label">Home</span>
+        </div>
+        <div class="tab">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+            <rect x="4" y="14" width="3" height="6" rx="0.5" fill="currentColor"/>
+            <rect x="10" y="9" width="3" height="11" rx="0.5" fill="currentColor"/>
+            <rect x="16" y="4" width="3" height="16" rx="0.5" fill="currentColor"/>
+          </svg>
+          <span class="label">Portfolio</span>
+        </div>
+        <div class="tab">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+            <path d="M12 3 c2.5 3 4 6 4 9 0 2.5-1.5 4.5-4 5-2.5-.5-4-2.5-4-5 0-3 1.5-6 4-9z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+            <circle cx="12" cy="11" r="1.5" fill="currentColor"/>
+            <path d="M9 18 8 21 M15 18 l1 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+          </svg>
+          <span class="label">Deal</span>
+        </div>
+        <div class="tab">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+            <circle cx="9" cy="10" r="3" stroke="currentColor" stroke-width="1.6"/>
+            <circle cx="16" cy="9" r="2.4" stroke="currentColor" stroke-width="1.6"/>
+            <path d="M3 19 c0-2.5 2-4 6-4 s6 1.5 6 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+            <path d="M14 15 c2.5 0 5 1 5 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+          </svg>
+          <span class="label">Community</span>
+        </div>
+        <div class="tab active">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+            <path d="M2 9 12 4 22 9 12 14 z" fill="currentColor"/>
+            <path d="M6 11 v5 c0 1.5 3 3 6 3 s6-1.5 6-3 v-5" stroke="currentColor" stroke-width="1.6" fill="none"/>
+            <path d="M22 9 v6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+          </svg>
+          <span class="label">Akkademy</span>
+        </div>
+      </div>
+
+      <div class="home-indicator"></div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
