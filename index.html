@@ -2,10 +2,67 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8" />
-<title>Akka — Home Screen (demo)</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Akka — Demo</title>
 <link rel="preconnect" href="https://api.fontshare.com" />
 <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=satoshi@300,400,500,700,900&display=swap" />
 <style>
+*, *::before, *::after { box-sizing: border-box; }
+html, body {
+  margin: 0; padding: 0;
+  min-height: 100vh;
+  background: #f0f0ec;
+  font-family: "Satoshi", "Inter", system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  display: flex; align-items: center; justify-content: center;
+  padding: 48px 20px;
+}
+.stage { position: relative; width: 390px; height: 844px; }
+.phone {
+  position: relative; width: 390px; height: 844px;
+  border-radius: 54px; background: #1d1f22; padding: 11px;
+  box-shadow:
+    0 60px 80px -30px rgba(20,30,40,0.22),
+    0 25px 50px -20px rgba(20,30,40,0.14),
+    0 0 0 1px rgba(255,255,255,0.06) inset;
+}
+.screen {
+  width: 100%; height: 100%; border-radius: 44px;
+  overflow: hidden; position: relative; background: #0C2A24;
+}
+.btn-side { position: absolute; background: #1d1f22; width: 3px; }
+.btn-side.silent { left: -3px; top: 110px; height: 32px; border-radius: 2px 0 0 2px; }
+.btn-side.vol-up { left: -3px; top: 165px; height: 60px; border-radius: 2px 0 0 2px; }
+.btn-side.vol-dn { left: -3px; top: 235px; height: 60px; border-radius: 2px 0 0 2px; }
+.btn-side.power  { right: -3px; top: 200px; height: 96px; border-radius: 0 2px 2px 0; }
+#app-root { position: absolute; inset: 0; border-radius: 44px; overflow: hidden; }
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="phone">
+    <span class="btn-side silent"></span>
+    <span class="btn-side vol-up"></span>
+    <span class="btn-side vol-dn"></span>
+    <span class="btn-side power"></span>
+    <div class="screen">
+      <div id="app-root"></div>
+    </div>
+  </div>
+</div>
+<script>
+const SCREENS = {
+  home: `<style>
+:host {
+  display: block; position: absolute; inset: 0;
+  overflow: hidden; border-radius: 44px;
+  background: #0C2A24; color: #fff;
+  -webkit-font-smoothing: antialiased;
+  font-family: "Satoshi", "Inter", system-ui, sans-serif;
+}
+.tab { cursor: pointer; }
+.tabbar .tab { cursor: pointer; }
+
 /* ============================================================
    AKKA DESIGN SYSTEM — Color & Type Tokens
    ============================================================ */
@@ -449,20 +506,9 @@ html, body {
   width: 134px; height: 5px;
   background: rgba(255,255,255,0.85); border-radius: 999px; z-index: 20;
 }
+
 </style>
-</head>
-<body>
-
-<div class="stage">
-  <div class="phone">
-    <span class="btn-side silent"></span>
-    <span class="btn-side vol-up"></span>
-    <span class="btn-side vol-dn"></span>
-    <span class="btn-side power"></span>
-
-    <div class="screen" data-screen="Akka Home">
-
-      <!-- notch -->
+<!-- notch -->
       <div class="notch"></div>
 
       <!-- status bar -->
@@ -551,7 +597,7 @@ html, body {
             </svg>
           </span>
           <span class="text"><strong>Praxis :</strong><span>2 days left</span></span>
-          <button class="discover">Discover</button>
+          <button class="discover" onclick="window.navigate('deal_popup')">Discover</button>
         </div>
 
         <!-- PORTFOLIO -->
@@ -711,7 +757,7 @@ html, body {
         <div style="height:110px;"></div>
 
         <!-- DANIEL -->
-        <div class="daniel" aria-label="Chat with Daniel">
+        <div class="daniel" aria-label="Chat with Daniel" onclick="window.navigate('daniel')" style="cursor:pointer">
           <svg class="daniel-img" viewBox="0 0 44 44">
             <!-- Suit body -->
             <path d="M10 44 V36 c0-4 4-7 12-7 s12 3 12 7 v8 z" fill="#0a0a0a"/>
@@ -752,7 +798,7 @@ html, body {
           </div>
           <span>Home</span>
         </div>
-        <div class="tab">
+        <div class="tab" onclick="window.navigate('portfolio')" style="cursor:pointer">
           <div class="ti">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
               <rect x="4" y="14" width="3.5" height="6" rx="1" fill="rgba(255,255,255,0.55)"/>
@@ -762,7 +808,7 @@ html, body {
           </div>
           <span>Portfolio</span>
         </div>
-        <div class="tab">
+        <div class="tab" onclick="window.navigate('deal_popup')" style="cursor:pointer">
           <div class="ti">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
               <path d="M12 2c4 3 6 7 6 11l-1 6h-10l-1-6c0-4 2-8 6-11Z" stroke="rgba(255,255,255,0.7)" stroke-width="1.6" stroke-linejoin="round"/>
@@ -772,7 +818,7 @@ html, body {
           </div>
           <span>Deal</span>
         </div>
-        <div class="tab">
+        <div class="tab" onclick="window.navigate('community')" style="cursor:pointer">
           <div class="ti">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
               <circle cx="9" cy="9" r="3.2" stroke="rgba(255,255,255,0.55)" stroke-width="1.6"/>
@@ -784,7 +830,7 @@ html, body {
           <span>Community</span>
           <span class="tab-dot"></span>
         </div>
-        <div class="tab">
+        <div class="tab" onclick="window.navigate('akkademy')" style="cursor:pointer">
           <div class="ti">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
               <path d="M2 9 12 4l10 5-10 5z" stroke="rgba(255,255,255,0.55)" stroke-width="1.6" stroke-linejoin="round"/>
@@ -796,11 +842,2522 @@ html, body {
         </div>
       </div>
 
-      <div class="home-indicator"></div>
+      <div class="home-indicator"></div>`,
+  portfolio: `<style>
+:host {
+  display: block; position: absolute; inset: 0;
+  overflow: hidden; border-radius: 44px;
+  background: #0C2A24; color: #fff;
+  -webkit-font-smoothing: antialiased;
+  font-family: "Satoshi", "Inter", system-ui, sans-serif;
+}
+.tab { cursor: pointer; }
+.tabbar .tab { cursor: pointer; }
 
-    </div><!-- /screen -->
-  </div><!-- /phone -->
-</div><!-- /stage -->
+:root {
+  --akka-dark-green:       #0C2A24;
+  --akka-dark-green-soft:  #123530;
+  --akka-highlight-green:  #3DDC97;
+  --fg-1: #ffffff;
+  --fg-2: rgba(255,255,255,0.72);
+  --fg-3: rgba(255,255,255,0.48);
+  --fg-accent: #3DDC97;
+  --font-display: "Satoshi", "Inter", system-ui, sans-serif;
+  --font-body:    "Satoshi", "Inter", system-ui, sans-serif;
+}
 
+*, *::before, *::after { box-sizing: border-box; }
+html, body {
+  margin: 0; padding: 0;
+  min-height: 100vh;
+  background: #f0f0ec;
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  display: flex; align-items: center; justify-content: center;
+  padding: 48px 20px;
+}
+
+/* ---- Phone frame ---- */
+.stage { position: relative; width: 390px; height: 844px; }
+.phone {
+  position: relative; width: 390px; height: 844px;
+  border-radius: 54px; background: #1d1f22; padding: 11px;
+  box-shadow:
+    0 60px 80px -30px rgba(20,30,40,0.22),
+    0 25px 50px -20px rgba(20,30,40,0.14),
+    0 0 0 1px rgba(255,255,255,0.06) inset;
+}
+.screen {
+  width: 100%; height: 100%; border-radius: 44px;
+  overflow: hidden; position: relative;
+  background: var(--akka-dark-green); color: var(--fg-1);
+}
+.notch {
+  position: absolute; top: 11px; left: 50%; transform: translateX(-50%);
+  width: 162px; height: 32px; background: #1d1f22;
+  border-radius: 0 0 22px 22px; z-index: 30;
+}
+.notch::after {
+  content: ""; position: absolute; right: 26px; top: 10px;
+  width: 11px; height: 11px; border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #2a3540 0%, #0a0e14 70%);
+}
+.notch::before {
+  content: ""; position: absolute; left: 38px; top: 13px;
+  width: 50px; height: 5px; background: #0a0e14; border-radius: 4px;
+}
+.btn-side { position: absolute; background: #1d1f22; width: 3px; }
+.btn-side.silent { left: -3px; top: 110px; height: 32px; border-radius: 2px 0 0 2px; }
+.btn-side.vol-up { left: -3px; top: 165px; height: 60px; border-radius: 2px 0 0 2px; }
+.btn-side.vol-dn { left: -3px; top: 235px; height: 60px; border-radius: 2px 0 0 2px; }
+.btn-side.power  { right: -3px; top: 200px; height: 96px; border-radius: 0 2px 2px 0; }
+
+/* ---- Status bar ---- */
+.statusbar {
+  position: relative; z-index: 5; height: 54px; padding: 18px 30px 0;
+  display: flex; align-items: center; justify-content: space-between;
+  color: #fff;
+  font-family: -apple-system, "SF Pro Text", system-ui, sans-serif;
+  font-weight: 600; font-size: 16px; letter-spacing: -0.2px;
+}
+.statusbar .icons { display: flex; align-items: center; gap: 6px; }
+
+/* ---- Content ---- */
+.content {
+  position: absolute; inset: 0; padding-top: 54px;
+  overflow-y: auto; scrollbar-width: none;
+  padding-bottom: 92px;
+}
+.content::-webkit-scrollbar { display: none; }
+
+/* ---- Segmented toggle ---- */
+.segmented {
+  margin: 14px 22px 24px;
+  height: 52px; background: rgba(255,255,255,0.04);
+  border-radius: 999px; padding: 6px;
+  display: grid; grid-template-columns: 1fr 1fr;
+}
+.segmented .seg {
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 999px; font-size: 15px; font-weight: 700;
+  letter-spacing: -0.2px; color: rgba(255,255,255,0.55); cursor: pointer;
+}
+.segmented .seg.active {
+  background: var(--akka-highlight-green);
+  color: var(--akka-dark-green);
+}
+
+/* ---- Diversification card ---- */
+.diversification {
+  margin: 0 22px;
+  background: linear-gradient(180deg, rgba(61,220,151,0.04) 0%, rgba(61,220,151,0.02) 100%);
+  border: 1px solid rgba(61,220,151,0.18);
+  border-radius: 22px; padding: 18px 20px;
+  position: relative; overflow: hidden;
+}
+.diversification::before {
+  content: ""; position: absolute; right: -40px; bottom: -40px;
+  width: 160px; height: 160px; border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, rgba(61,220,151,0.45) 0%, rgba(61,220,151,0) 70%);
+  filter: blur(8px); pointer-events: none;
+}
+.diversification::after {
+  content: ""; position: absolute; right: 18px; bottom: 18px;
+  width: 60px; height: 60px;
+  border: 1.5px solid rgba(61,220,151,0.35);
+  border-top-color: transparent; border-left-color: transparent;
+  border-radius: 0 0 18px 0; pointer-events: none;
+}
+.div-row { display: flex; justify-content: space-between; align-items: flex-start; gap: 14px; position: relative; z-index: 1; }
+.div-left { flex: 1; }
+.div-title { font-size: 17px; font-weight: 700; color: #fff; letter-spacing: -0.3px; margin-bottom: 4px; }
+.div-sub   { font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.55); }
+.div-right { text-align: right; padding-right: 6px; }
+.div-num {
+  font-family: var(--font-display); color: var(--akka-highlight-green);
+  font-size: 32px; font-weight: 700; letter-spacing: -1px; line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.div-num .of { opacity: 0.55; font-size: 22px; font-weight: 600; margin-left: 2px; }
+.div-foot { font-size: 11px; color: rgba(255,255,255,0.45); font-weight: 500; margin-top: 4px; }
+.div-bar {
+  margin-top: 14px; height: 6px; background: rgba(255,255,255,0.08);
+  border-radius: 999px; overflow: hidden; position: relative; z-index: 1;
+}
+.div-bar > span { display: block; width: 40%; height: 100%; background: var(--akka-highlight-green); border-radius: 999px; }
+
+/* ---- Valuation / Revenue tabs ---- */
+.vtabs {
+  display: flex; gap: 28px; padding: 26px 22px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.vtab {
+  padding-bottom: 10px; position: relative;
+  color: rgba(255,255,255,0.42);
+  font-size: 17px; font-weight: 600; letter-spacing: -0.2px; cursor: pointer;
+}
+.vtab.active { color: #fff; }
+.vtab.active::after {
+  content: ""; position: absolute; left: -2px; right: -2px; bottom: -1px;
+  height: 2px; background: var(--akka-highlight-green); border-radius: 2px;
+}
+
+/* ---- Balance block ---- */
+.balance-block { padding: 22px 22px 0; }
+.balance-row { display: flex; align-items: center; gap: 8px; }
+.balance-amount {
+  font-family: var(--font-display); font-weight: 700;
+  font-size: 36px; letter-spacing: -1.6px; color: #fff;
+  line-height: 1; font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.info-circle {
+  width: 18px; height: 18px; border-radius: 50%;
+  border: 1.5px solid rgba(255,255,255,0.35);
+  color: rgba(255,255,255,0.55);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 700; font-style: italic;
+  font-family: Georgia, serif;
+}
+.balance-meta {
+  margin-top: 14px; display: flex; align-items: center; justify-content: space-between;
+}
+.meta-left { display: flex; align-items: center; gap: 10px; }
+.pct-pill {
+  background: rgba(61,220,151,0.16); color: var(--akka-highlight-green);
+  font-weight: 700; font-size: 13px; padding: 6px 11px;
+  border-radius: 999px; line-height: 1; letter-spacing: -0.1px;
+}
+.meta-gain { color: var(--akka-highlight-green); font-weight: 600; font-size: 15px; letter-spacing: -0.2px; }
+.period-pill {
+  height: 36px; padding: 0 14px 0 16px;
+  background: rgba(61,220,151,0.10); border-radius: 999px;
+  color: var(--akka-highlight-green);
+  font-size: 14px; font-weight: 600; letter-spacing: -0.2px;
+  display: flex; align-items: center; gap: 8px;
+}
+
+/* ---- Big sparkline ---- */
+.big-spark { margin: 26px 0 0; width: 100%; height: 142px; display: block; }
+
+/* ---- My investments ---- */
+.invest-section { padding: 22px 22px 0; }
+.invest-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+.invest-head h3 { margin: 0; color: #fff; font-size: 19px; font-weight: 700; letter-spacing: -0.3px; }
+.invest-head-right { display: flex; align-items: center; gap: 12px; }
+.icon-btn-sm { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.6); }
+.filter-pill {
+  height: 32px; padding: 0 10px 0 14px;
+  border: 1px solid rgba(255,255,255,0.14); border-radius: 999px;
+  color: rgba(255,255,255,0.85); font-size: 13px; font-weight: 600; letter-spacing: -0.1px;
+  display: flex; align-items: center; gap: 6px;
+}
+
+.invest-row {
+  display: flex; align-items: center;
+  padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,0.06); gap: 14px;
+}
+.invest-row:last-child { border-bottom: none; }
+
+.co-logo { width: 48px; height: 48px; border-radius: 12px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+.co-logo.anthropic { background: #fff; color: #0a0a0a; }
+.co-logo.anthropic .a-mark { font-family: var(--font-display); font-weight: 800; font-size: 22px; letter-spacing: -1px; display: flex; align-items: baseline; line-height: 1; }
+.co-logo.anthropic .a-mark .bar { color: #D97757; font-weight: 700; margin-left: 1px; }
+.co-logo.rhyde { background: #0a1612; color: var(--akka-highlight-green); }
+
+.invest-meta { flex: 1; min-width: 0; }
+.invest-name   { color: #fff; font-size: 16px; font-weight: 600; letter-spacing: -0.2px; line-height: 1.1; margin-bottom: 4px; }
+.invest-amount { color: rgba(255,255,255,0.55); font-size: 13px; font-weight: 500; font-variant-numeric: tabular-nums; }
+.invest-spark  { width: 56px; height: 28px; flex-shrink: 0; }
+.invest-perf   { text-align: right; flex-shrink: 0; min-width: 64px; margin: 0 4px; }
+.perf-pct { font-weight: 700; font-size: 15px; letter-spacing: -0.2px; line-height: 1.1; font-variant-numeric: tabular-nums; }
+.perf-pct.up   { color: var(--akka-highlight-green); }
+.perf-pct.down { color: #E5614C; }
+.perf-date { color: rgba(255,255,255,0.45); font-size: 12px; font-weight: 500; margin-top: 4px; }
+
+.doc-tag {
+  width: 50px; height: 56px;
+  background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 10px; flex-shrink: 0;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 4px; position: relative;
+}
+.doc-tag .doc-icon { color: rgba(255,255,255,0.85); width: 18px; height: 20px; }
+.doc-tag .doc-q    { color: #fff; font-size: 9px; font-weight: 700; letter-spacing: 0.1px; line-height: 1; }
+.doc-tag .doc-dot  { position: absolute; top: 6px; right: 6px; width: 6px; height: 6px; background: var(--akka-highlight-green); border-radius: 50%; }
+
+/* ---- Tab bar ---- */
+.tabbar {
+  position: absolute; bottom: 0; left: 0; right: 0; height: 92px;
+  background: var(--akka-dark-green); border-top: 1px solid rgba(255,255,255,0.06);
+  display: flex; align-items: flex-start; justify-content: space-around;
+  padding: 12px 14px 0; z-index: 10;
+}
+.tab { display: flex; flex-direction: column; align-items: center; gap: 6px; color: rgba(255,255,255,0.55); font-size: 11px; font-weight: 500; flex: 1; position: relative; }
+.tab .ti { width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; }
+.tab.active { color: var(--akka-highlight-green); font-weight: 600; }
+.tab .tab-dot { position: absolute; top: 0; left: calc(50% + 4px); width: 7px; height: 7px; border-radius: 50%; background: #E5614C; border: 2px solid var(--akka-dark-green); }
+.home-indicator { position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%); width: 134px; height: 5px; background: rgba(255,255,255,0.85); border-radius: 999px; z-index: 20; }
+
+</style>
+<div class="notch"></div>
+
+      <!-- Status bar -->
+      <div class="statusbar">
+        <span>12:22</span>
+        <span class="icons">
+          <svg width="18" height="11" viewBox="0 0 18 11" fill="none">
+            <rect x="0" y="7" width="3" height="4" rx="0.6" fill="#fff"/>
+            <rect x="5" y="5" width="3" height="6" rx="0.6" fill="#fff"/>
+            <rect x="10" y="2.5" width="3" height="8.5" rx="0.6" fill="#fff"/>
+            <rect x="15" y="0" width="3" height="11" rx="0.6" fill="#fff"/>
+          </svg>
+          <svg width="16" height="11" viewBox="0 0 16 11" fill="none">
+            <path d="M8 2.6c2.1 0 4 .8 5.4 2.2l1-1A8 8 0 0 0 8 1.4 8 8 0 0 0 1.6 3.8l1 1A7.6 7.6 0 0 1 8 2.6Z" fill="#fff"/>
+            <path d="M8 6c1.3 0 2.4.5 3.3 1.3l1-1A6 6 0 0 0 8 4.6 6 6 0 0 0 3.7 6.3l1 1A4.7 4.7 0 0 1 8 6Z" fill="#fff"/>
+            <circle cx="8" cy="9.6" r="1.4" fill="#fff"/>
+          </svg>
+          <svg width="26" height="12" viewBox="0 0 26 12" fill="none">
+            <rect x="0.5" y="0.5" width="22" height="11" rx="3" stroke="#fff" stroke-opacity="0.5" fill="none"/>
+            <rect x="2" y="2" width="19" height="8" rx="1.5" fill="#fff"/>
+            <path d="M24 4v4c.6-.2 1-.7 1-1.4V5.4c0-.7-.4-1.2-1-1.4Z" fill="#fff" fill-opacity="0.5"/>
+          </svg>
+        </span>
+      </div>
+
+      <div class="content">
+
+        <!-- Segmented toggle -->
+        <div class="segmented">
+          <div class="seg active">My portfolio</div>
+          <div class="seg">Akka portfolio</div>
+        </div>
+
+        <!-- Diversification card -->
+        <div class="diversification">
+          <div class="div-row">
+            <div class="div-left">
+              <div class="div-title">Diversification level</div>
+              <div class="div-sub">18 more to reduce your risk</div>
+            </div>
+            <div class="div-right">
+              <div class="div-num">12<span class="of">/30</span></div>
+              <div class="div-foot">investments</div>
+            </div>
+          </div>
+          <div class="div-bar"><span></span></div>
+        </div>
+
+        <!-- Valuation / Revenue tabs -->
+        <div class="vtabs">
+          <div class="vtab">Valuation</div>
+          <div class="vtab active">Revenue</div>
+        </div>
+
+        <!-- Balance -->
+        <div class="balance-block">
+          <div class="balance-row">
+            <div class="balance-amount">€28 381,31</div>
+            <span class="info-circle">i</span>
+          </div>
+          <div class="balance-meta">
+            <div class="meta-left">
+              <span class="pct-pill">+42 %</span>
+              <span class="meta-gain">+€8 381</span>
+            </div>
+            <div class="period-pill">
+              Last month
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="none">
+                <path d="m4 6 4 4 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+          </div>
+
+          <!-- Big sparkline -->
+          <svg class="big-spark" viewBox="0 0 346 142" preserveAspectRatio="none">
+            <defs>
+              <linearGradient id="bigFill" x1="0" x2="0" y1="0" y2="1">
+                <stop offset="0%" stop-color="#3DDC97" stop-opacity="0.18"/>
+                <stop offset="100%" stop-color="#3DDC97" stop-opacity="0"/>
+              </linearGradient>
+            </defs>
+            <path d="M0 110 C 28 108,56 104,86 96 S 144 78,180 64 S 240 42,280 30 S 330 14,346 8 L 346 142 L 0 142 Z" fill="url(#bigFill)"/>
+            <path d="M0 110 C 28 108,56 104,86 96 S 144 78,180 64 S 240 42,280 30 S 330 14,346 8" stroke="#3DDC97" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+
+        <!-- My investments -->
+        <div class="invest-section">
+          <div class="invest-head">
+            <h3>My investments</h3>
+            <div class="invest-head-right">
+              <div class="icon-btn-sm">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                  <circle cx="11" cy="11" r="6.5" stroke="currentColor" stroke-width="1.7"/>
+                  <path d="m16 16 4 4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+                </svg>
+              </div>
+              <div class="filter-pill">
+                All (5)
+                <svg width="12" height="12" viewBox="0 0 16 16" fill="none">
+                  <path d="m4 6 4 4 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <!-- Anthropic -->
+          <div class="invest-row">
+            <div class="co-logo anthropic">
+              <span class="a-mark">A<span class="bar">|</span></span>
+            </div>
+            <div class="invest-meta">
+              <div class="invest-name">Anthropic</div>
+              <div class="invest-amount">€1 500</div>
+            </div>
+            <svg class="invest-spark" viewBox="0 0 56 28" preserveAspectRatio="none">
+              <defs>
+                <linearGradient id="upFill" x1="0" x2="0" y1="0" y2="1">
+                  <stop offset="0%" stop-color="#3DDC97" stop-opacity="0.32"/>
+                  <stop offset="100%" stop-color="#3DDC97" stop-opacity="0"/>
+                </linearGradient>
+              </defs>
+              <path d="M0 18 C 8 16,14 19,22 16 S 36 8,44 6 S 52 4,56 3 L 56 28 L 0 28 Z" fill="url(#upFill)"/>
+              <path d="M0 18 C 8 16,14 19,22 16 S 36 8,44 6 S 52 4,56 3" stroke="#3DDC97" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+            </svg>
+            <div class="invest-perf">
+              <div class="perf-pct up">+28 %</div>
+              <div class="perf-date">Feb 2026</div>
+            </div>
+            <div class="doc-tag">
+              <svg class="doc-icon" viewBox="0 0 24 24" fill="none">
+                <path d="M7 3h7l5 5v13H7V3Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" fill="none"/>
+                <path d="M14 3v5h5" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+                <path d="M10 13h6M10 17h4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+              </svg>
+              <span class="doc-q">Q4 2025</span>
+              <span class="doc-dot"></span>
+            </div>
+          </div>
+
+          <!-- Rhyde -->
+          <div class="invest-row">
+            <div class="co-logo rhyde">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                <path d="M3 17 L9 11 L13 14 L21 5" stroke="#3DDC97" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M3 21 L9 15 L13 18 L21 9" stroke="#3DDC97" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" opacity="0.6"/>
+              </svg>
+            </div>
+            <div class="invest-meta">
+              <div class="invest-name">Rhyde</div>
+              <div class="invest-amount">€3 000</div>
+            </div>
+            <svg class="invest-spark" viewBox="0 0 56 28" preserveAspectRatio="none">
+              <path d="M0 6 C 8 8,14 10,22 14 S 36 18,44 22 S 52 24,56 25" stroke="#E5614C" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+            </svg>
+            <div class="invest-perf">
+              <div class="perf-pct down">-14 %</div>
+              <div class="perf-date">Feb 2026</div>
+            </div>
+            <div class="doc-tag">
+              <svg class="doc-icon" viewBox="0 0 24 24" fill="none">
+                <path d="M7 3h7l5 5v13H7V3Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" fill="none"/>
+                <path d="M14 3v5h5" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+                <path d="M10 13h6M10 17h4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+              </svg>
+              <span class="doc-q">Q4 2025</span>
+              <span class="doc-dot"></span>
+            </div>
+          </div>
+
+        </div>
+      </div><!-- /content -->
+
+      <!-- Tab bar -->
+      <div class="tabbar">
+        <div class="tab" onclick="window.navigate('home')" style="cursor:pointer">
+          <div class="ti">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <path d="M12 3 3 10v11h6v-7h6v7h6V10z" stroke="rgba(255,255,255,0.55)" stroke-width="1.6" stroke-linejoin="round" fill="none"/>
+            </svg>
+          </div>
+          <span>Home</span>
+        </div>
+        <div class="tab active">
+          <div class="ti">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <rect x="4" y="14" width="3.5" height="6" rx="1" fill="#3DDC97"/>
+              <rect x="10.25" y="9" width="3.5" height="11" rx="1" fill="#3DDC97"/>
+              <rect x="16.5" y="4" width="3.5" height="16" rx="1" fill="#3DDC97"/>
+            </svg>
+          </div>
+          <span>Portfolio</span>
+        </div>
+        <div class="tab" onclick="window.navigate('deal_popup')" style="cursor:pointer">
+          <div class="ti">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <path d="M12 2c4 3 6 7 6 11l-1 6h-10l-1-6c0-4 2-8 6-11Z" stroke="rgba(255,255,255,0.7)" stroke-width="1.6" stroke-linejoin="round"/>
+              <circle cx="12" cy="10" r="2" stroke="rgba(255,255,255,0.7)" stroke-width="1.6"/>
+              <path d="m7 17-2 4 4-1M17 17l2 4-4-1" stroke="rgba(255,255,255,0.7)" stroke-width="1.6" stroke-linejoin="round" fill="none"/>
+            </svg>
+          </div>
+          <span>Deal</span>
+        </div>
+        <div class="tab" onclick="window.navigate('community')" style="cursor:pointer">
+          <div class="ti">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <circle cx="9" cy="9" r="3.2" stroke="rgba(255,255,255,0.55)" stroke-width="1.6"/>
+              <circle cx="17" cy="11" r="2.4" stroke="rgba(255,255,255,0.55)" stroke-width="1.6"/>
+              <path d="M3 19c0-3 3-5 6-5s6 2 6 5" stroke="rgba(255,255,255,0.55)" stroke-width="1.6" stroke-linecap="round"/>
+              <path d="M14 19c.5-2 2.5-3 4-3s3 1 3 3" stroke="rgba(255,255,255,0.55)" stroke-width="1.6" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <span>Community</span>
+        </div>
+        <div class="tab" onclick="window.navigate('akkademy')" style="cursor:pointer">
+          <div class="ti">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <path d="M2 9 12 4l10 5-10 5z" stroke="rgba(255,255,255,0.55)" stroke-width="1.6" stroke-linejoin="round"/>
+              <path d="M6 11v5c0 1.5 3 3 6 3s6-1.5 6-3v-5" stroke="rgba(255,255,255,0.55)" stroke-width="1.6"/>
+              <path d="M21 9v5" stroke="rgba(255,255,255,0.55)" stroke-width="1.6" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <span>Akkademy</span>
+        </div>
+      </div>
+
+      <div class="home-indicator"></div>`,
+  daniel: `<style>
+:host {
+  display: block; position: absolute; inset: 0;
+  overflow: hidden; border-radius: 44px;
+  background: #0C2A24; color: #fff;
+  -webkit-font-smoothing: antialiased;
+  font-family: "Satoshi", "Inter", system-ui, sans-serif;
+}
+.tab { cursor: pointer; }
+.tabbar .tab { cursor: pointer; }
+
+:root {
+  --akka-dark-green:      #0C2A24;
+  --akka-highlight-green: #3DDC97;
+  --font-display: "Satoshi", "Inter", system-ui, sans-serif;
+  --font-body:    "Satoshi", "Inter", system-ui, sans-serif;
+}
+*, *::before, *::after { box-sizing: border-box; }
+html, body {
+  margin: 0; padding: 0;
+  min-height: 100vh;
+  background: #f0f0ec;
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  display: flex; align-items: center; justify-content: center;
+  padding: 48px 20px;
+}
+
+/* ---- Phone frame ---- */
+.stage { position: relative; width: 390px; height: 844px; }
+.phone {
+  position: relative; width: 390px; height: 844px;
+  border-radius: 54px; background: #1d1f22; padding: 11px;
+  box-shadow:
+    0 60px 80px -30px rgba(20,30,40,0.22),
+    0 25px 50px -20px rgba(20,30,40,0.14),
+    0 0 0 1px rgba(255,255,255,0.06) inset;
+}
+.screen {
+  width: 100%; height: 100%; border-radius: 44px;
+  overflow: hidden; position: relative;
+  background: var(--akka-dark-green); color: #fff;
+}
+.notch {
+  position: absolute; top: 11px; left: 50%; transform: translateX(-50%);
+  width: 162px; height: 32px; background: #1d1f22;
+  border-radius: 0 0 22px 22px; z-index: 30;
+}
+.notch::after {
+  content: ""; position: absolute; right: 26px; top: 10px;
+  width: 11px; height: 11px; border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #2a3540 0%, #0a0e14 70%);
+}
+.notch::before {
+  content: ""; position: absolute; left: 38px; top: 13px;
+  width: 50px; height: 5px; background: #0a0e14; border-radius: 4px;
+}
+.btn-side { position: absolute; background: #1d1f22; width: 3px; }
+.btn-side.silent { left: -3px; top: 110px; height: 32px; border-radius: 2px 0 0 2px; }
+.btn-side.vol-up { left: -3px; top: 165px; height: 60px; border-radius: 2px 0 0 2px; }
+.btn-side.vol-dn { left: -3px; top: 235px; height: 60px; border-radius: 2px 0 0 2px; }
+.btn-side.power  { right: -3px; top: 200px; height: 96px; border-radius: 0 2px 2px 0; }
+
+/* ---- Status bar (dimmed — modal is open) ---- */
+.statusbar {
+  position: relative; z-index: 5; height: 54px; padding: 18px 30px 0;
+  display: flex; align-items: center; justify-content: space-between;
+  color: #fff; opacity: 0.55;
+  font-family: -apple-system, "SF Pro Text", system-ui, sans-serif;
+  font-weight: 600; font-size: 16px; letter-spacing: -0.2px;
+}
+.statusbar .icons { display: flex; align-items: center; gap: 6px; }
+
+/* ---- Dimmed home background ---- */
+.home-bg {
+  position: absolute; inset: 0; padding-top: 54px;
+  overflow: hidden; opacity: 0.32; pointer-events: none;
+}
+.scrim {
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg,
+    rgba(8,30,26,0.0) 0%,
+    rgba(8,30,26,0.25) 30%,
+    rgba(8,30,26,0.55) 50%,
+    rgba(8,30,26,0.85) 60%);
+  z-index: 2; pointer-events: none;
+}
+
+/* home-bg internals */
+.header {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  padding: 14px 22px 18px;
+}
+.learner { display: flex; align-items: center; gap: 10px; }
+.learner-icon {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: rgba(61,220,151,0.14);
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.learner-text { display: flex; flex-direction: column; gap: 5px; }
+.learner-label { color: var(--akka-highlight-green); font-weight: 700; font-size: 17px; line-height: 1; }
+.progress { width: 120px; height: 4px; background: rgba(255,255,255,0.10); border-radius: 999px; overflow: hidden; }
+.progress > span { display: block; width: 82%; height: 100%; background: var(--akka-highlight-green); border-radius: 999px; }
+.xp { color: rgba(255,255,255,0.42); font-size: 11px; font-weight: 500; line-height: 1; }
+.header-actions { display: flex; align-items: center; gap: 14px; padding-top: 2px; }
+.icon-btn { width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; color: #fff; position: relative; }
+.badge {
+  position: absolute; top: -4px; right: -6px;
+  min-width: 16px; height: 16px; background: #E5614C; color: #fff;
+  border-radius: 999px; font-size: 10px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center; padding: 0 4px; line-height: 1;
+}
+.avatar {
+  width: 32px; height: 32px; border-radius: 50%; overflow: hidden;
+  background: radial-gradient(ellipse at 50% 38%, #f1d7c2 0%, #d3a380 38%, #966749 70%, #5b3a26 100%);
+}
+
+.praxis-pill {
+  margin: 0 22px; background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(242,184,75,0.30); border-radius: 16px;
+  height: 50px; padding: 0 16px;
+  display: flex; align-items: center; gap: 10px; color: #F2B84B;
+}
+.praxis-pill .text { flex: 1; font-size: 15px; }
+.praxis-pill .text strong { font-weight: 700; }
+.praxis-pill .text span { color: rgba(242,184,75,0.7); font-weight: 500; margin-left: 4px; }
+.praxis-pill .view { color: #F2B84B; font-weight: 600; font-size: 14px; display: flex; align-items: center; gap: 4px; }
+.pi-dot { width: 8px; height: 8px; border-radius: 50%; background: #F2B84B; border: 1.5px solid rgba(242,184,75,0.4); flex-shrink: 0; }
+
+.yp-card {
+  margin: 22px 22px 0; background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.06); border-radius: 18px; padding: 18px 18px 28px;
+}
+.yp-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+.yp-label { font-size: 15px; color: rgba(255,255,255,0.7); }
+.yp-right { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.85); }
+.traffic-dots { display: flex; gap: 4px; }
+.traffic-dots .dot { width: 8px; height: 8px; border-radius: 50%; }
+.traffic-dots .dot.r  { background: #E5614C; }
+.traffic-dots .dot.g1 { background: var(--akka-highlight-green); }
+.traffic-dots .dot.g2 { background: var(--akka-highlight-green); }
+.yp-balance {
+  font-family: var(--font-display); font-weight: 700;
+  font-size: 36px; letter-spacing: -1.4px; color: #fff;
+}
+
+/* ============================================================
+   DANIEL BOTTOM SHEET
+   ============================================================ */
+.sheet {
+  position: absolute; left: 0; right: 0; bottom: 0; top: 320px;
+  background: #0E2A24; border-radius: 28px 28px 0 0;
+  z-index: 10; display: flex; flex-direction: column;
+  box-shadow: 0 -20px 40px rgba(0,0,0,0.35);
+}
+.grabber {
+  align-self: center; margin-top: 10px;
+  width: 44px; height: 5px;
+  background: rgba(255,255,255,0.30); border-radius: 999px;
+}
+
+/* Daniel header */
+.d-head {
+  display: flex; align-items: center; gap: 14px;
+  padding: 22px 24px 20px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.d-orb {
+  width: 56px; height: 56px; border-radius: 50%; flex-shrink: 0;
+  background: radial-gradient(circle at 35% 35%, #6FE9B5 0%, #3DDC97 12%, #1F7A5A 45%, #0E3B30 80%);
+  box-shadow: 0 0 0 2px rgba(61,220,151,0.30), 0 0 18px rgba(61,220,151,0.40);
+  display: flex; align-items: center; justify-content: center; overflow: hidden;
+}
+.d-orb svg { width: 48px; height: 48px; position: relative; z-index: 2; }
+.d-meta { display: flex; flex-direction: column; gap: 2px; }
+.d-name {
+  color: var(--akka-highlight-green); font-family: var(--font-display);
+  font-weight: 700; font-size: 24px; letter-spacing: -0.5px; line-height: 1.1;
+}
+.d-role { color: rgba(255,255,255,0.45); font-size: 14px; font-weight: 500; }
+
+/* Daniel message */
+.d-msg {
+  padding: 22px 24px 18px; color: #fff;
+  font-size: 16px; line-height: 1.45; letter-spacing: -0.2px;
+}
+
+/* Quick replies */
+.quick-replies { padding: 4px 18px 0; display: flex; flex-direction: column; gap: 12px; }
+.qr {
+  display: flex; align-items: center; gap: 14px;
+  height: 56px; padding: 0 18px;
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.12); border-radius: 16px;
+  color: #fff; font-size: 15px; font-weight: 500; letter-spacing: -0.2px;
+  cursor: pointer;
+}
+.qr:hover { background: rgba(255,255,255,0.04); }
+.qr-icon { width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.qr-icon.dot-red { background: #E5614C; width: 12px; height: 12px; border-radius: 50%; margin: 0 5px; }
+
+/* Composer */
+.composer {
+  margin-top: auto; padding: 14px 18px 20px;
+  display: flex; align-items: center; gap: 10px;
+}
+.composer-input {
+  flex: 1; height: 52px; border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: transparent; color: rgba(255,255,255,0.45);
+  padding: 0 22px; font-size: 15px; font-family: var(--font-body); letter-spacing: -0.2px;
+}
+.composer-input::placeholder { color: rgba(255,255,255,0.35); }
+.composer-input:focus { outline: none; border-color: rgba(61,220,151,0.4); color: #fff; }
+.send-btn {
+  width: 52px; height: 52px; border-radius: 50%;
+  background: var(--akka-highlight-green); color: var(--akka-dark-green);
+  border: none; display: flex; align-items: center; justify-content: center;
+  cursor: pointer; flex-shrink: 0;
+}
+.send-btn:hover { background: #58E3A6; }
+
+.home-indicator {
+  position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%);
+  width: 134px; height: 5px; background: rgba(255,255,255,0.85); border-radius: 999px; z-index: 20;
+}
+
+</style>
+<div class="notch"></div>
+
+      <!-- Status bar (dimmed) -->
+      <div class="statusbar">
+        <span>12:22</span>
+        <span class="icons">
+          <svg width="18" height="11" viewBox="0 0 18 11" fill="none">
+            <rect x="0" y="7" width="3" height="4" rx="0.6" fill="#fff"/>
+            <rect x="5" y="5" width="3" height="6" rx="0.6" fill="#fff"/>
+            <rect x="10" y="2.5" width="3" height="8.5" rx="0.6" fill="#fff"/>
+            <rect x="15" y="0" width="3" height="11" rx="0.6" fill="#fff"/>
+          </svg>
+          <svg width="16" height="11" viewBox="0 0 16 11" fill="none">
+            <path d="M8 2.6c2.1 0 4 .8 5.4 2.2l1-1A8 8 0 0 0 8 1.4 8 8 0 0 0 1.6 3.8l1 1A7.6 7.6 0 0 1 8 2.6Z" fill="#fff"/>
+            <path d="M8 6c1.3 0 2.4.5 3.3 1.3l1-1A6 6 0 0 0 8 4.6 6 6 0 0 0 3.7 6.3l1 1A4.7 4.7 0 0 1 8 6Z" fill="#fff"/>
+            <circle cx="8" cy="9.6" r="1.4" fill="#fff"/>
+          </svg>
+          <svg width="26" height="12" viewBox="0 0 26 12" fill="none">
+            <rect x="0.5" y="0.5" width="22" height="11" rx="3" stroke="#fff" stroke-opacity="0.5" fill="none"/>
+            <rect x="2" y="2" width="19" height="8" rx="1.5" fill="#fff"/>
+            <path d="M24 4v4c.6-.2 1-.7 1-1.4V5.4c0-.7-.4-1.2-1-1.4Z" fill="#fff" fill-opacity="0.5"/>
+          </svg>
+        </span>
+      </div>
+
+      <!-- Dimmed home background -->
+      <div class="home-bg">
+        <div class="header">
+          <div class="learner">
+            <div class="learner-icon">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <path d="M8 1.5l1.85 3.95 4.35.45-3.25 2.95.95 4.25L8 10.95l-3.9 2.15.95-4.25L1.8 5.9l4.35-.45L8 1.5Z" stroke="#3DDC97" stroke-width="1.4" stroke-linejoin="round" fill="none"/>
+              </svg>
+            </div>
+            <div class="learner-text">
+              <span class="learner-label">Learner</span>
+              <div class="progress"><span></span></div>
+              <span class="xp">820 / 1000 XP</span>
+            </div>
+          </div>
+          <div class="header-actions">
+            <div class="icon-btn">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                <path d="M6 9a6 6 0 0 1 12 0c0 4 1.5 5.5 2 6.5H4c.5-1 2-2.5 2-6.5Z" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/>
+                <path d="M10 19a2 2 0 0 0 4 0" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <div class="icon-btn">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                <path d="M21.5 3.2 2.7 10.6c-.9.4-.8 1.6.1 1.9l7 2.4 2.5 7c.3.9 1.5 1 1.9.1L21.6 3.3Z" stroke="#fff" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/>
+                <path d="m9.8 14.9 4.3-4.3" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/>
+              </svg>
+              <span class="badge">3</span>
+            </div>
+            <div class="avatar"></div>
+          </div>
+        </div>
+
+        <div class="praxis-pill">
+          <span class="pi-dot"></span>
+          <span class="text"><strong>Praxis :</strong><span>2 days left</span></span>
+          <span class="view">View
+            <svg width="12" height="12" viewBox="0 0 16 16" fill="none">
+              <path d="m6 4 4 4-4 4" stroke="#F2B84B" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+        </div>
+
+        <div class="yp-card">
+          <div class="yp-row">
+            <span class="yp-label">Your Portfolio</span>
+            <div class="yp-right">
+              <div class="traffic-dots">
+                <span class="dot r"></span>
+                <span class="dot g1"></span>
+                <span class="dot g2"></span>
+              </div>
+              <span>Watch out</span>
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="none">
+                <path d="m4 6 4 4 4-4" stroke="rgba(255,255,255,0.85)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+          </div>
+          <div class="yp-balance">€28 381,31</div>
+        </div>
+      </div>
+
+      <!-- Scrim overlay -->
+      <div class="scrim" onclick="window.navigate('home')" style="cursor:pointer"></div>
+
+      <!-- DANIEL BOTTOM SHEET -->
+      <div class="sheet">
+        <div class="grabber"></div>
+        <div style="position:absolute;top:14px;right:16px;width:30px;height:30px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:rgba(255,255,255,0.5);z-index:20;" onclick="window.navigate('home')" title="Close"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M18 6 6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>
+
+        <!-- Daniel header -->
+        <div class="d-head">
+          <div class="d-orb">
+            <svg viewBox="0 0 48 48">
+              <path d="M11 48 V40 c0-4 4-7 13-7 s13 3 13 7 v8 z" fill="#0a0a0a"/>
+              <path d="M19 36 l5 5 l5-5 v8 h-10 z" fill="#fff"/>
+              <path d="M24 39 l-1.6 2 l1.6 6 l1.6-6 z" fill="#7B1E22"/>
+              <ellipse cx="24" cy="22" rx="10" ry="11" fill="#f7f5ef"/>
+              <path d="M15 18 q-2 5 0 9 q3-2 4-4 z" fill="#3DDC97"/>
+              <path d="M33 18 q2 5 0 9 q-3-2-4-4 z" fill="#3DDC97"/>
+              <path d="M24 8 l-2 7 h4 z" fill="#3DDC97"/>
+              <ellipse cx="24" cy="26" rx="4.5" ry="3.2" fill="#ebe6da"/>
+              <ellipse cx="20.5" cy="22" rx="1" ry="1.4" fill="#0a0a0a"/>
+              <ellipse cx="27.5" cy="22" rx="1" ry="1.4" fill="#0a0a0a"/>
+              <path d="M15 16 l1.2 4 l3-2 z" fill="#f7f5ef"/>
+              <path d="M33 16 l-1.2 4 l-3-2 z" fill="#f7f5ef"/>
+              <ellipse cx="22.3" cy="27" rx="0.6" ry="0.8" fill="#0a0a0a" opacity="0.5"/>
+              <ellipse cx="25.7" cy="27" rx="0.6" ry="0.8" fill="#0a0a0a" opacity="0.5"/>
+            </svg>
+          </div>
+          <div class="d-meta">
+            <span class="d-name">Daniel</span>
+            <span class="d-role">Your AI coach</span>
+          </div>
+        </div>
+
+        <!-- Daniel message -->
+        <div class="d-msg">
+          Hey, I noticed your diversification is red, do you want me to explain why?
+        </div>
+
+        <!-- Quick replies -->
+        <div class="quick-replies">
+          <div class="qr">
+            <span class="qr-icon dot-red"></span>
+            <span>Explain my red flag</span>
+          </div>
+          <div class="qr">
+            <span class="qr-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                <path d="M12 2c4 3 6 7 6 11l-1 6h-10l-1-6c0-4 2-8 6-11Z" stroke="#9B82DC" stroke-width="1.7" stroke-linejoin="round" fill="none"/>
+                <circle cx="12" cy="10" r="2" stroke="#9B82DC" stroke-width="1.7" fill="none"/>
+                <path d="m7 17-2 4 4-1M17 17l2 4-4-1" stroke="#9B82DC" stroke-width="1.7" stroke-linejoin="round" fill="none"/>
+              </svg>
+            </span>
+            <span>Quick overview of the deal</span>
+          </div>
+          <div class="qr">
+            <span class="qr-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                <path d="M7 3h7l5 5v13H7V3Z" stroke="#6AB4D8" stroke-width="1.7" stroke-linejoin="round" fill="none"/>
+                <path d="M14 3v5h5" stroke="#6AB4D8" stroke-width="1.7" stroke-linejoin="round"/>
+                <path d="M10 13h6M10 17h4" stroke="#6AB4D8" stroke-width="1.7" stroke-linecap="round"/>
+              </svg>
+            </span>
+            <span>Latest club news</span>
+          </div>
+          <div class="qr">
+            <span class="qr-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                <rect x="3" y="14" width="3.5" height="6" rx="1" fill="#3DDC97"/>
+                <rect x="9.25" y="9" width="3.5" height="11" rx="1" fill="#3DDC97"/>
+                <rect x="15.5" y="4" width="3.5" height="16" rx="1" fill="#3DDC97"/>
+              </svg>
+            </span>
+            <span>Portfolio performance</span>
+          </div>
+        </div>
+
+        <!-- Composer -->
+        <div class="composer">
+          <input class="composer-input" type="text" placeholder="Ask anything…" />
+          <button class="send-btn" aria-label="Send">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+              <path d="M21.5 3.2 2.7 10.6c-.9.4-.8 1.6.1 1.9l7 2.4 2.5 7c.3.9 1.5 1 1.9.1L21.6 3.3Z" stroke="#0C2A24" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round" fill="none"/>
+              <path d="m9.8 14.9 4.3-4.3" stroke="#0C2A24" stroke-width="1.8" stroke-linecap="round"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="home-indicator"></div>`,
+  deal_popup: `<style>
+:host {
+  display: block; position: absolute; inset: 0;
+  overflow: hidden; border-radius: 44px;
+  background: #0C2A24; color: #fff;
+  -webkit-font-smoothing: antialiased;
+  font-family: "Satoshi", "Inter", system-ui, sans-serif;
+}
+.tab { cursor: pointer; }
+.tabbar .tab { cursor: pointer; }
+
+:root {
+  --akka-dark-green:      #0C2A24;
+  --akka-highlight-green: #3DDC97;
+  --warning: #F2B84B;
+  --font-display: "Satoshi", "Inter", system-ui, sans-serif;
+  --font-body:    "Satoshi", "Inter", system-ui, sans-serif;
+}
+*, *::before, *::after { box-sizing: border-box; }
+html, body {
+  margin: 0; padding: 0;
+  min-height: 100vh; background: #f0f0ec;
+  font-family: var(--font-body); -webkit-font-smoothing: antialiased;
+  display: flex; align-items: center; justify-content: center;
+  padding: 48px 20px;
+}
+
+/* ---- Phone frame ---- */
+.stage { position: relative; width: 390px; height: 844px; }
+.phone {
+  width: 390px; height: 844px; border-radius: 54px;
+  background: #1d1f22; padding: 11px;
+  box-shadow:
+    0 60px 80px -30px rgba(20,30,40,0.22),
+    0 25px 50px -20px rgba(20,30,40,0.14),
+    0 0 0 1px rgba(255,255,255,0.06) inset;
+  position: relative;
+}
+.screen {
+  width: 100%; height: 100%; border-radius: 44px; overflow: hidden;
+  position: relative; background: var(--akka-dark-green); color: #fff;
+}
+.notch { position: absolute; top: 11px; left: 50%; transform: translateX(-50%); width: 162px; height: 32px; background: #1d1f22; border-radius: 0 0 22px 22px; z-index: 30; }
+.notch::after { content:""; position:absolute; right:26px; top:10px; width:11px; height:11px; border-radius:50%; background: radial-gradient(circle at 35% 35%, #2a3540 0%, #0a0e14 70%); }
+.notch::before { content:""; position:absolute; left:38px; top:13px; width:50px; height:5px; background:#0a0e14; border-radius:4px; }
+.btn-side { position: absolute; background: #1d1f22; width: 3px; }
+.btn-side.silent { left: -3px; top: 110px; height: 32px; border-radius: 2px 0 0 2px; }
+.btn-side.vol-up { left: -3px; top: 165px; height: 60px; border-radius: 2px 0 0 2px; }
+.btn-side.vol-dn { left: -3px; top: 235px; height: 60px; border-radius: 2px 0 0 2px; }
+.btn-side.power  { right: -3px; top: 200px; height: 96px; border-radius: 0 2px 2px 0; }
+
+/* ---- Status bar ---- */
+.statusbar {
+  position: absolute; top: 0; left: 0; right: 0; z-index: 35; height: 54px;
+  padding: 18px 30px 0;
+  display: flex; align-items: center; justify-content: space-between;
+  color: rgba(255,255,255,0.6);
+  font-family: -apple-system, "SF Pro Text", system-ui, sans-serif;
+  font-weight: 600; font-size: 16px; letter-spacing: -0.2px;
+}
+.statusbar .icons { display: flex; align-items: center; gap: 6px; }
+
+/* ---- Dimmed home behind ---- */
+.home-back {
+  position: absolute; inset: 0; padding: 54px 22px 0;
+  filter: blur(0.5px); opacity: 0.55; pointer-events: none;
+}
+.home-back .h-row {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  padding-top: 14px; color: rgba(255,255,255,0.5);
+}
+.h-pill {
+  display: inline-flex; align-items: center; gap: 6px;
+  color: var(--akka-highlight-green); font-size: 16px; font-weight: 700;
+}
+.h-bar { height: 3px; width: 80px; background: rgba(255,255,255,0.1); border-radius: 999px; margin-top: 8px; }
+.h-bar > i { display:block; height:100%; width: 60%; background: var(--akka-highlight-green); border-radius: 999px; }
+.h-xp { font-size: 10px; margin-top: 4px; color: rgba(255,255,255,0.35); }
+.h-actions { display: flex; align-items: center; gap: 14px; }
+.h-avatar { width: 36px; height: 36px; border-radius: 50%; background: radial-gradient(ellipse at 50% 35%, #f4d4ba 0%, #c98a64 50%, #4a2818 100%); border: 2px solid rgba(255,255,255,0.2); }
+.h-praxis {
+  margin-top: 22px; padding: 14px 16px;
+  background: rgba(255,255,255,0.92); border-radius: 14px;
+  color: var(--akka-dark-green);
+  display: flex; align-items: center; justify-content: space-between;
+  font-size: 14px; font-weight: 600;
+}
+
+/* ---- Scrim ---- */
+.scrim {
+  position: absolute; inset: 0;
+  background: rgba(6,18,16,0.55);
+  backdrop-filter: blur(2px);
+  z-index: 5;
+}
+
+/* ---- Bottom sheet ---- */
+.sheet {
+  position: absolute; left: 0; right: 0; bottom: 0;
+  background: var(--akka-dark-green);
+  border-radius: 28px 28px 0 0;
+  box-shadow: 0 -20px 40px rgba(0,0,0,0.4);
+  z-index: 10; padding-bottom: 28px; overflow: hidden;
+}
+.grabber {
+  position: absolute; top: 10px; left: 50%; transform: translateX(-50%);
+  width: 44px; height: 4px; border-radius: 999px;
+  background: rgba(255,255,255,0.4); z-index: 5;
+}
+
+/* ---- Hero ---- */
+.hero { position: relative; height: 240px; overflow: hidden; }
+.hero-bg {
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse at 30% 50%, #1f8060 0%, transparent 60%),
+    radial-gradient(ellipse at 70% 30%, #2d9472 0%, transparent 50%),
+    linear-gradient(180deg, #0e3b30 0%, #061b17 100%);
+}
+.hero::after {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(12,42,36,0) 50%, rgba(12,42,36,0.95) 100%);
+}
+.new-deal {
+  position: absolute; top: 22px; left: 22px;
+  background: #fff; color: var(--akka-dark-green);
+  font-size: 12px; font-weight: 800;
+  padding: 6px 12px; border-radius: 8px; letter-spacing: 0.5px; z-index: 4;
+}
+.hero-title {
+  position: absolute; left: 22px; right: 22px; bottom: 4px; z-index: 4;
+}
+.hero-title h1 {
+  margin: 0 0 14px;
+  font-family: var(--font-display); font-size: 38px; font-weight: 600;
+  color: #fff; letter-spacing: -0.5px; line-height: 1;
+}
+.badges { display: flex; gap: 8px; }
+.badge-pill {
+  display: inline-flex; align-items: center;
+  padding: 7px 16px; border-radius: 999px;
+  font-size: 13px; font-weight: 700;
+}
+.badge-green { color: var(--akka-highlight-green); border: 1.5px solid var(--akka-highlight-green); background: transparent; }
+.badge-grey  { color: rgba(255,255,255,0.85); border: 1.5px solid rgba(255,255,255,0.18); background: rgba(255,255,255,0.06); }
+
+/* ---- Body ---- */
+.body { padding: 22px 22px 0; }
+.desc {
+  color: rgba(255,255,255,0.66); font-size: 15px; font-weight: 500;
+  line-height: 1.55; letter-spacing: -0.2px; margin-bottom: 18px;
+}
+
+.stat-card {
+  display: grid; grid-template-columns: 1fr 1fr 1fr;
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.06); border-radius: 16px;
+  padding: 14px 0; margin-bottom: 12px;
+}
+.stat { text-align: center; border-right: 1px solid rgba(255,255,255,0.07); }
+.stat:last-child { border-right: none; }
+.stat-label { color: rgba(255,255,255,0.5); font-size: 12px; font-weight: 500; margin-bottom: 4px; }
+.stat-value { color: #fff; font-size: 20px; font-weight: 700; letter-spacing: -0.4px; }
+
+.risk-card {
+  display: flex; align-items: center; justify-content: space-between;
+  background: rgba(242,184,75,0.06);
+  border: 1px solid rgba(242,184,75,0.14); border-radius: 12px;
+  padding: 12px 16px; margin-bottom: 16px;
+}
+.risk-label { color: var(--warning); font-size: 13px; font-weight: 700; }
+.risk-dots  { display: flex; gap: 5px; }
+.risk-dot   { width: 7px; height: 7px; border-radius: 50%; background: rgba(255,255,255,0.18); }
+.risk-dot.on { background: var(--warning); }
+
+.invest-row { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+.av-stack { display: flex; }
+.av-stack .av { width: 28px; height: 28px; border-radius: 50%; border: 2px solid var(--akka-dark-green); margin-left: -8px; }
+.av-stack .av:first-child { margin-left: 0; }
+.av-1 { background: radial-gradient(ellipse at 50% 35%, #d9b48a 0%, #8a5a3a 50%, #2a1810 100%); }
+.av-2 { background: radial-gradient(ellipse at 50% 35%, #f4d4ba 0%, #c98a64 50%, #4a2818 100%); }
+.av-3 { background: radial-gradient(ellipse at 50% 35%, #e8c8a8 0%, #a8744c 50%, #2a1810 100%); }
+.invest-text { color: rgba(255,255,255,0.6); font-size: 14px; font-weight: 500; }
+
+.urgency {
+  text-align: center; margin-bottom: 18px;
+  color: rgba(255,255,255,0.7); font-size: 14px; font-weight: 500; letter-spacing: -0.1px;
+}
+.urgency strong { color: var(--warning); font-weight: 700; }
+
+.actions { display: flex; flex-direction: column; gap: 10px; }
+.btn-primary {
+  height: 54px; border-radius: 999px;
+  background: var(--akka-highlight-green); color: var(--akka-dark-green);
+  font-size: 15px; font-weight: 700; border: none;
+  letter-spacing: -0.2px; font-family: var(--font-body); cursor: pointer;
+}
+.btn-primary:hover { background: #58E3A6; }
+.btn-ghost {
+  height: 54px; border-radius: 999px;
+  background: transparent; border: 1px solid rgba(255,255,255,0.16);
+  color: #fff; font-size: 15px; font-weight: 600;
+  font-family: var(--font-body); cursor: pointer;
+}
+.btn-ghost:hover { background: rgba(255,255,255,0.04); }
+
+.home-indicator {
+  position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%);
+  width: 134px; height: 5px; background: rgba(255,255,255,0.85);
+  border-radius: 999px; z-index: 40;
+}
+
+</style>
+<div class="notch"></div>
+
+      <!-- Status bar -->
+      <div class="statusbar">
+        <span>12:22</span>
+        <span class="icons">
+          <svg width="18" height="11" viewBox="0 0 18 11" fill="none">
+            <rect x="0" y="7" width="3" height="4" rx="0.6" fill="#fff" fill-opacity="0.7"/>
+            <rect x="5" y="5" width="3" height="6" rx="0.6" fill="#fff" fill-opacity="0.7"/>
+            <rect x="10" y="2.5" width="3" height="8.5" rx="0.6" fill="#fff" fill-opacity="0.7"/>
+            <rect x="15" y="0" width="3" height="11" rx="0.6" fill="#fff" fill-opacity="0.7"/>
+          </svg>
+          <svg width="16" height="11" viewBox="0 0 16 11" fill="none">
+            <path d="M8 2.6c2.1 0 4 .8 5.4 2.2l1-1A8 8 0 0 0 8 1.4 8 8 0 0 0 1.6 3.8l1 1A7.6 7.6 0 0 1 8 2.6Z" fill="#fff" fill-opacity="0.7"/>
+            <path d="M8 6c1.3 0 2.4.5 3.3 1.3l1-1A6 6 0 0 0 8 4.6 6 6 0 0 0 3.7 6.3l1 1A4.7 4.7 0 0 1 8 6Z" fill="#fff" fill-opacity="0.7"/>
+            <circle cx="8" cy="9.6" r="1.4" fill="#fff" fill-opacity="0.7"/>
+          </svg>
+          <svg width="26" height="12" viewBox="0 0 26 12" fill="none">
+            <rect x="0.5" y="0.5" width="22" height="11" rx="3" stroke="#fff" stroke-opacity="0.4" fill="none"/>
+            <rect x="2" y="2" width="19" height="8" rx="1.5" fill="#fff" fill-opacity="0.7"/>
+          </svg>
+        </span>
+      </div>
+
+      <!-- Faint home behind -->
+      <div class="home-back">
+        <div class="h-row">
+          <div>
+            <div class="h-pill">
+              <span style="width:14px;height:14px;border-radius:50%;border:1px solid currentColor;display:inline-flex;align-items:center;justify-content:center;">
+                <svg width="8" height="8" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2 l3 7 7 1 -5 5 1 7 -6-3 -6 3 1-7 -5-5 7-1z"/></svg>
+              </span>
+              Learner
+            </div>
+            <div class="h-bar"><i></i></div>
+            <div class="h-xp">820 / 1000 XP</div>
+          </div>
+          <div class="h-actions">
+            <div class="h-avatar"></div>
+          </div>
+        </div>
+        <div class="h-praxis">
+          <span>Praxis · 5 days left</span>
+          <span style="color:var(--akka-highlight-green);font-size:13px;">Discover →</span>
+        </div>
+      </div>
+
+      <div class="scrim" onclick="window.navigate('home')" style="cursor:pointer"></div>
+
+      <!-- Bottom sheet -->
+      <div class="sheet">
+        <div class="grabber"></div>
+
+        <!-- Hero -->
+        <div class="hero">
+          <div class="hero-bg"></div>
+          <span class="new-deal">NEW DEAL</span>
+          <div class="hero-title">
+            <h1>Praxis</h1>
+            <div class="badges">
+              <span class="badge-pill badge-green">Pre-IPO</span>
+              <span class="badge-pill badge-grey">AI</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Body -->
+        <div class="body">
+          <p class="desc">The AI layer between humans and machines. Praxis is redefining how enterprises work one autonomous agent at a time.</p>
+
+          <div class="stat-card">
+            <div class="stat">
+              <div class="stat-label">Valuation</div>
+              <div class="stat-value">€30M</div>
+            </div>
+            <div class="stat">
+              <div class="stat-label">Allocation</div>
+              <div class="stat-value">€1–2M</div>
+            </div>
+            <div class="stat">
+              <div class="stat-label">Target</div>
+              <div class="stat-value">x2</div>
+            </div>
+          </div>
+
+          <div class="risk-card">
+            <span class="risk-label">Moderate risk</span>
+            <div class="risk-dots">
+              <span class="risk-dot on"></span>
+              <span class="risk-dot on"></span>
+              <span class="risk-dot on"></span>
+              <span class="risk-dot"></span>
+              <span class="risk-dot"></span>
+            </div>
+          </div>
+
+          <div class="invest-row">
+            <div class="av-stack">
+              <span class="av av-1"></span>
+              <span class="av av-2"></span>
+              <span class="av av-3"></span>
+            </div>
+            <span class="invest-text">Pedro, Laura + 1 240 have invested</span>
+          </div>
+
+          <div class="urgency"><strong>5 days left</strong> to submit your intention</div>
+
+          <div class="actions">
+            <button class="btn-primary" onclick="window.navigate('deal')">Discover the deal</button>
+            <button class="btn-ghost" onclick="window.navigate('home')">Remind me later</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="home-indicator"></div>`,
+  community: `<style>
+:host {
+  display: block; position: absolute; inset: 0;
+  overflow: hidden; border-radius: 44px;
+  background: #0C2A24; color: #fff;
+  -webkit-font-smoothing: antialiased;
+  font-family: "Satoshi", "Inter", system-ui, sans-serif;
+}
+.tab { cursor: pointer; }
+.tabbar .tab { cursor: pointer; }
+
+:root {
+  --akka-dark-green:      #0C2A24;
+  --akka-highlight-green: #3DDC97;
+  --font-display: "Satoshi", "Inter", system-ui, sans-serif;
+  --font-body:    "Satoshi", "Inter", system-ui, sans-serif;
+}
+*, *::before, *::after { box-sizing: border-box; }
+html, body {
+  margin: 0; padding: 0;
+  min-height: 100vh; background: #f0f0ec;
+  font-family: var(--font-body); -webkit-font-smoothing: antialiased;
+  display: flex; align-items: center; justify-content: center;
+  padding: 48px 20px;
+}
+
+/* ---- Phone frame ---- */
+.stage { position: relative; width: 390px; height: 844px; }
+.phone {
+  position: relative; width: 390px; height: 844px;
+  border-radius: 54px; background: #1d1f22; padding: 11px;
+  box-shadow:
+    0 60px 80px -30px rgba(20,30,40,0.22),
+    0 25px 50px -20px rgba(20,30,40,0.14),
+    0 0 0 1px rgba(255,255,255,0.06) inset;
+}
+.screen {
+  width: 100%; height: 100%; border-radius: 44px; overflow: hidden;
+  position: relative; background: var(--akka-dark-green); color: #fff;
+}
+.notch { position: absolute; top: 11px; left: 50%; transform: translateX(-50%); width: 162px; height: 32px; background: #1d1f22; border-radius: 0 0 22px 22px; z-index: 30; }
+.notch::after { content:""; position:absolute; right:26px; top:10px; width:11px; height:11px; border-radius:50%; background: radial-gradient(circle at 35% 35%, #2a3540 0%, #0a0e14 70%); }
+.notch::before { content:""; position:absolute; left:38px; top:13px; width:50px; height:5px; background:#0a0e14; border-radius:4px; }
+.btn-side { position: absolute; background: #1d1f22; width: 3px; }
+.btn-side.silent { left: -3px; top: 110px; height: 32px; border-radius: 2px 0 0 2px; }
+.btn-side.vol-up { left: -3px; top: 165px; height: 60px; border-radius: 2px 0 0 2px; }
+.btn-side.vol-dn { left: -3px; top: 235px; height: 60px; border-radius: 2px 0 0 2px; }
+.btn-side.power  { right: -3px; top: 200px; height: 96px; border-radius: 0 2px 2px 0; }
+
+/* ---- Status bar ---- */
+.statusbar {
+  position: relative; z-index: 5; height: 54px; padding: 18px 30px 0;
+  display: flex; align-items: center; justify-content: space-between;
+  color: #fff;
+  font-family: -apple-system, "SF Pro Text", system-ui, sans-serif;
+  font-weight: 600; font-size: 16px; letter-spacing: -0.2px;
+}
+.statusbar .icons { display: flex; align-items: center; gap: 6px; }
+
+/* ---- Content ---- */
+.content {
+  position: absolute; inset: 0; padding-top: 54px;
+  overflow: hidden; display: flex; flex-direction: column;
+}
+
+/* ---- Top tabs ---- */
+.top-tabs {
+  display: flex; gap: 10px;
+  padding: 14px 22px 16px; align-items: center;
+}
+.tt {
+  padding: 12px 22px; border-radius: 999px;
+  font-size: 15px; font-weight: 700;
+  color: rgba(255,255,255,0.55); letter-spacing: -0.2px;
+  background: transparent; position: relative; cursor: pointer;
+}
+.tt.active { background: var(--akka-highlight-green); color: var(--akka-dark-green); }
+.tt .badge {
+  position: absolute; top: -2px; right: -4px;
+  min-width: 18px; height: 18px;
+  background: #E5614C; color: #fff;
+  font-size: 11px; font-weight: 700; border-radius: 999px;
+  display: flex; align-items: center; justify-content: center;
+  padding: 0 5px; line-height: 1;
+  border: 2px solid var(--akka-dark-green);
+}
+
+/* ---- Sub topics ---- */
+.topics {
+  display: flex; gap: 10px; padding: 0 22px 16px;
+  overflow-x: auto; scrollbar-width: none;
+}
+.topics::-webkit-scrollbar { display: none; }
+.topic {
+  padding: 8px 18px; border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.10);
+  color: rgba(255,255,255,0.55);
+  font-size: 13px; font-weight: 600; letter-spacing: -0.1px;
+  flex-shrink: 0; cursor: pointer;
+}
+.topic.active { color: var(--akka-highlight-green); border-color: rgba(61,220,151,0.4); }
+
+/* ---- Meta row ---- */
+.meta-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 22px 14px;
+  color: rgba(255,255,255,0.45); font-size: 13px; font-weight: 500; letter-spacing: -0.1px;
+}
+.meta-left { display: flex; align-items: center; gap: 8px; }
+.pos-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--akka-highlight-green); }
+.meta-row .pos  { color: #fff; font-weight: 600; }
+.meta-row .vote { color: var(--akka-highlight-green); font-weight: 600; }
+.meta-row .sep  { color: rgba(255,255,255,0.25); }
+.sort { display: flex; align-items: center; gap: 4px; color: #fff; font-weight: 600; cursor: pointer; }
+
+/* ---- Feed ---- */
+.feed {
+  flex: 1; overflow-y: auto; padding: 0 18px 12px;
+  scrollbar-width: none;
+}
+.feed::-webkit-scrollbar { display: none; }
+.day-stamp {
+  text-align: center; color: rgba(255,255,255,0.42);
+  font-size: 13px; font-weight: 500; margin: 8px 0 14px;
+}
+
+/* ---- Messages ---- */
+.msg { display: flex; gap: 10px; margin-bottom: 14px; }
+.msg.you { justify-content: flex-end; }
+.msg .av {
+  width: 32px; height: 32px; border-radius: 50%;
+  flex-shrink: 0; overflow: hidden;
+}
+.msg.you .av { display: none; }
+
+.av-laura { background: radial-gradient(ellipse at 50% 35%, #f4d4ba 0%, #c98a64 50%, #4a2818 100%); }
+.av-alex  { background: radial-gradient(ellipse at 50% 35%, #d9b48a 0%, #8a5a3a 50%, #2a1810 100%); }
+.av-daniel-ring {
+  background: radial-gradient(circle at 35% 35%, #6FE9B5 0%, #3DDC97 14%, #0E3B30 70%);
+  box-shadow: 0 0 0 1.5px rgba(61,220,151,0.5);
+  display: flex; align-items: center; justify-content: center;
+}
+.av-daniel-ring svg { width: 22px; height: 22px; }
+
+.bubble {
+  max-width: 270px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 16px; padding: 12px 14px 10px; color: #fff;
+}
+.msg.you .bubble {
+  background: rgba(61,220,151,0.10);
+  border-color: rgba(61,220,151,0.20);
+}
+
+.bub-head {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 10px; margin-bottom: 6px;
+}
+.bub-author {
+  display: flex; align-items: center; gap: 6px;
+  color: #fff; font-size: 14px; font-weight: 700; letter-spacing: -0.2px;
+}
+.msg.you .bub-author { color: var(--akka-highlight-green); }
+.flag { font-size: 13px; line-height: 1; }
+.karma {
+  display: inline-flex; align-items: center; gap: 3px;
+  background: rgba(61,220,151,0.12); color: var(--akka-highlight-green);
+  font-size: 11px; font-weight: 700; padding: 3px 7px; border-radius: 6px; line-height: 1;
+}
+.role {
+  background: rgba(61,220,151,0.12); color: var(--akka-highlight-green);
+  font-size: 10px; font-weight: 700; padding: 3px 7px;
+  border-radius: 6px; line-height: 1; letter-spacing: 0.1px;
+}
+.bub-time { color: rgba(255,255,255,0.42); font-size: 12px; font-weight: 500; }
+.bub-text {
+  color: #fff; font-size: 14px; font-weight: 500;
+  line-height: 1.45; letter-spacing: -0.2px;
+}
+.bub-foot {
+  margin-top: 8px; display: flex; align-items: center; justify-content: space-between;
+  color: rgba(255,255,255,0.38); font-size: 11px; font-weight: 500;
+}
+.upvotes {
+  display: inline-flex; align-items: center; gap: 4px;
+  color: var(--akka-highlight-green); font-weight: 700; font-size: 12px;
+}
+
+/* ---- Composer ---- */
+.composer {
+  padding: 12px 18px 18px;
+  display: flex; align-items: center; gap: 10px;
+  border-top: 1px solid rgba(255,255,255,0.05);
+  background: var(--akka-dark-green);
+}
+.composer input {
+  flex: 1; height: 48px; border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: transparent; color: rgba(255,255,255,0.45);
+  padding: 0 22px; font-size: 14px; font-family: var(--font-body); letter-spacing: -0.2px;
+}
+.composer input::placeholder { color: rgba(255,255,255,0.35); }
+.composer input:focus { outline: none; border-color: rgba(61,220,151,0.4); color: #fff; }
+.composer .send {
+  width: 48px; height: 48px; border-radius: 50%;
+  background: var(--akka-highlight-green); color: var(--akka-dark-green);
+  border: none; display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; cursor: pointer;
+}
+.composer .send:hover { background: #58E3A6; }
+
+/* ---- Tab bar ---- */
+.tabbar {
+  position: absolute; bottom: 0; left: 0; right: 0; height: 92px;
+  background: var(--akka-dark-green); border-top: 1px solid rgba(255,255,255,0.06);
+  display: flex; align-items: flex-start; justify-content: space-around;
+  padding: 12px 14px 0; z-index: 10;
+}
+.tab { display: flex; flex-direction: column; align-items: center; gap: 6px; color: rgba(255,255,255,0.55); font-size: 11px; font-weight: 500; flex: 1; position: relative; }
+.tab .ti { width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; }
+.tab.active { color: var(--akka-highlight-green); font-weight: 600; }
+.tab .tab-dot { position: absolute; top: 0; left: calc(50% + 4px); width: 7px; height: 7px; border-radius: 50%; background: #E5614C; border: 2px solid var(--akka-dark-green); }
+
+.home-indicator {
+  position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%);
+  width: 134px; height: 5px; background: rgba(255,255,255,0.85);
+  border-radius: 999px; z-index: 20;
+}
+
+</style>
+<div class="notch"></div>
+
+      <!-- Status bar -->
+      <div class="statusbar">
+        <span>12:22</span>
+        <span class="icons">
+          <svg width="18" height="11" viewBox="0 0 18 11" fill="none">
+            <rect x="0" y="7" width="3" height="4" rx="0.6" fill="#fff"/>
+            <rect x="5" y="5" width="3" height="6" rx="0.6" fill="#fff"/>
+            <rect x="10" y="2.5" width="3" height="8.5" rx="0.6" fill="#fff"/>
+            <rect x="15" y="0" width="3" height="11" rx="0.6" fill="#fff"/>
+          </svg>
+          <svg width="16" height="11" viewBox="0 0 16 11" fill="none">
+            <path d="M8 2.6c2.1 0 4 .8 5.4 2.2l1-1A8 8 0 0 0 8 1.4 8 8 0 0 0 1.6 3.8l1 1A7.6 7.6 0 0 1 8 2.6Z" fill="#fff"/>
+            <path d="M8 6c1.3 0 2.4.5 3.3 1.3l1-1A6 6 0 0 0 8 4.6 6 6 0 0 0 3.7 6.3l1 1A4.7 4.7 0 0 1 8 6Z" fill="#fff"/>
+            <circle cx="8" cy="9.6" r="1.4" fill="#fff"/>
+          </svg>
+          <svg width="26" height="12" viewBox="0 0 26 12" fill="none">
+            <rect x="0.5" y="0.5" width="22" height="11" rx="3" stroke="#fff" stroke-opacity="0.5" fill="none"/>
+            <rect x="2" y="2" width="19" height="8" rx="1.5" fill="#fff"/>
+            <path d="M24 4v4c.6-.2 1-.7 1-1.4V5.4c0-.7-.4-1.2-1-1.4Z" fill="#fff" fill-opacity="0.5"/>
+          </svg>
+        </span>
+      </div>
+
+      <div class="content">
+
+        <!-- Top tabs: Groups · Messages · Events -->
+        <div class="top-tabs">
+          <div class="tt active">Groups</div>
+          <div class="tt">
+            Messages
+            <span class="badge">3</span>
+          </div>
+          <div class="tt">Events</div>
+        </div>
+
+        <!-- Sub topics -->
+        <div class="topics">
+          <div class="topic">General</div>
+          <div class="topic active">Praxis</div>
+          <div class="topic">Support</div>
+        </div>
+
+        <!-- Meta row -->
+        <div class="meta-row">
+          <div class="meta-left">
+            <span class="pos-dot"></span>
+            <span class="pos">73% positive</span>
+            <span class="sep">·</span>
+            <span>847 members</span>
+            <span class="sep">·</span>
+            <span class="vote">Vote</span>
+          </div>
+          <div class="sort">
+            New
+            <svg width="12" height="12" viewBox="0 0 16 16" fill="none">
+              <path d="m4 6 4 4 4-4" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        </div>
+
+        <!-- Feed -->
+        <div class="feed">
+          <div class="day-stamp">Today</div>
+
+          <!-- Laura T. -->
+          <div class="msg">
+            <div class="av av-laura"></div>
+            <div class="bubble">
+              <div class="bub-head">
+                <div class="bub-author">
+                  Laura T.
+                  <span class="flag">🇫🇷</span>
+                  <span class="karma">★ 1.1K</span>
+                </div>
+                <span class="bub-time">8:50 AM</span>
+              </div>
+              <div class="bub-text">The deal memo mentions 47 enterprise clients. Anyone know the retention rate?</div>
+              <div class="bub-foot">
+                <span>Seen by 892</span>
+                <span class="upvotes">
+                  <svg width="11" height="11" viewBox="0 0 16 16" fill="none">
+                    <path d="M8 3 L3 9 h3 v4 h4 v-4 h3 z" fill="#3DDC97"/>
+                  </svg>
+                  12
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Daniel (AI Coach) -->
+          <div class="msg">
+            <div class="av av-daniel-ring">
+              <svg viewBox="0 0 24 24">
+                <path d="M5 24 V20 c0-2 2-3.5 6-3.5 s6 1.5 6 3.5 v4 z" fill="#0a0a0a"/>
+                <path d="M9 18 l3 3 l3-3 v6 h-6 z" fill="#fff"/>
+                <path d="M12 19 l-1 1 l1 3 l1-3 z" fill="#7B1E22"/>
+                <ellipse cx="12" cy="11" rx="5.5" ry="6" fill="#f7f5ef"/>
+                <path d="M7 9 q-1.2 3 0 6 q2-1 2.5-2.5 z" fill="#3DDC97"/>
+                <path d="M17 9 q1.2 3 0 6 q-2-1-2.5-2.5 z" fill="#3DDC97"/>
+                <path d="M12 4 l-1.2 3.5 h2.4 z" fill="#3DDC97"/>
+                <ellipse cx="12" cy="13" rx="2.4" ry="1.7" fill="#ebe6da"/>
+                <ellipse cx="10" cy="11" rx="0.6" ry="0.85" fill="#0a0a0a"/>
+                <ellipse cx="14" cy="11" rx="0.6" ry="0.85" fill="#0a0a0a"/>
+              </svg>
+            </div>
+            <div class="bubble">
+              <div class="bub-head">
+                <div class="bub-author">
+                  Daniel
+                  <span class="role">AI Coach</span>
+                </div>
+                <span class="bub-time">8:51 AM</span>
+              </div>
+              <div class="bub-text">Based on the deal memo, Praxis reports 95% net revenue retention. That's strong for enterprise SaaS — above the 90% benchmark.</div>
+              <div class="bub-foot">
+                <span>Seen by 756</span>
+                <span class="upvotes">
+                  <svg width="11" height="11" viewBox="0 0 16 16" fill="none">
+                    <path d="M8 3 L3 9 h3 v4 h4 v-4 h3 z" fill="#3DDC97"/>
+                  </svg>
+                  47
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- You -->
+          <div class="msg you">
+            <div class="bubble">
+              <div class="bub-head">
+                <div class="bub-author">You</div>
+                <span class="bub-time">9:02 AM</span>
+              </div>
+              <div class="bub-text">Solid NRR. How does their churn compare to Watershed at the same stage?</div>
+              <div class="bub-foot">
+                <span>Seen by 534</span>
+                <span class="upvotes">
+                  <svg width="11" height="11" viewBox="0 0 16 16" fill="none">
+                    <path d="M8 3 L3 9 h3 v4 h4 v-4 h3 z" fill="#3DDC97"/>
+                  </svg>
+                  8
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Alex P. -->
+          <div class="msg">
+            <div class="av av-alex"></div>
+            <div class="bubble">
+              <div class="bub-head">
+                <div class="bub-author">
+                  Alex P.
+                  <span class="flag">🇩🇪</span>
+                  <span class="karma">★ 340</span>
+                </div>
+                <span class="bub-time">9:06 AM</span>
+              </div>
+              <div class="bub-text">€30M valuation for an AI company with €2.4M ARR growing 140% is…</div>
+            </div>
+          </div>
+
+          <!-- spacer for tab bar -->
+          <div style="height: 92px;"></div>
+        </div>
+
+        <!-- Composer -->
+        <div class="composer" style="margin-bottom: 92px;">
+          <input type="text" placeholder="Share your take…" />
+          <button class="send" aria-label="Send">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <path d="M21.5 3.2 2.7 10.6c-.9.4-.8 1.6.1 1.9l7 2.4 2.5 7c.3.9 1.5 1 1.9.1L21.6 3.3Z" stroke="#0C2A24" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round" fill="none"/>
+              <path d="m9.8 14.9 4.3-4.3" stroke="#0C2A24" stroke-width="1.8" stroke-linecap="round"/>
+            </svg>
+          </button>
+        </div>
+
+      </div>
+
+      <!-- Tab bar -->
+      <div class="tabbar">
+        <div class="tab" onclick="window.navigate('home')" style="cursor:pointer">
+          <div class="ti">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <path d="M12 3 3 10v11h6v-7h6v7h6V10z" stroke="rgba(255,255,255,0.55)" stroke-width="1.6" stroke-linejoin="round" fill="none"/>
+            </svg>
+          </div>
+          <span>Home</span>
+        </div>
+        <div class="tab" onclick="window.navigate('portfolio')" style="cursor:pointer">
+          <div class="ti">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <rect x="4" y="14" width="3.5" height="6" rx="1" fill="rgba(255,255,255,0.55)"/>
+              <rect x="10.25" y="9" width="3.5" height="11" rx="1" fill="rgba(255,255,255,0.55)"/>
+              <rect x="16.5" y="4" width="3.5" height="16" rx="1" fill="rgba(255,255,255,0.55)"/>
+            </svg>
+          </div>
+          <span>Portfolio</span>
+        </div>
+        <div class="tab" onclick="window.navigate('deal_popup')" style="cursor:pointer">
+          <div class="ti">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <path d="M12 2c4 3 6 7 6 11l-1 6h-10l-1-6c0-4 2-8 6-11Z" stroke="rgba(255,255,255,0.7)" stroke-width="1.6" stroke-linejoin="round"/>
+              <circle cx="12" cy="10" r="2" stroke="rgba(255,255,255,0.7)" stroke-width="1.6"/>
+              <path d="m7 17-2 4 4-1M17 17l2 4-4-1" stroke="rgba(255,255,255,0.7)" stroke-width="1.6" stroke-linejoin="round" fill="none"/>
+            </svg>
+          </div>
+          <span>Deal</span>
+        </div>
+        <div class="tab active">
+          <div class="ti">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <circle cx="9" cy="9" r="3.2" stroke="#3DDC97" stroke-width="1.6"/>
+              <circle cx="17" cy="11" r="2.4" stroke="#3DDC97" stroke-width="1.6"/>
+              <path d="M3 19c0-3 3-5 6-5s6 2 6 5" stroke="#3DDC97" stroke-width="1.6" stroke-linecap="round"/>
+              <path d="M14 19c.5-2 2.5-3 4-3s3 1 3 3" stroke="#3DDC97" stroke-width="1.6" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <span>Community</span>
+          <span class="tab-dot"></span>
+        </div>
+        <div class="tab" onclick="window.navigate('akkademy')" style="cursor:pointer">
+          <div class="ti">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <path d="M2 9 12 4l10 5-10 5z" stroke="rgba(255,255,255,0.55)" stroke-width="1.6" stroke-linejoin="round"/>
+              <path d="M6 11v5c0 1.5 3 3 6 3s6-1.5 6-3v-5" stroke="rgba(255,255,255,0.55)" stroke-width="1.6"/>
+              <path d="M21 9v5" stroke="rgba(255,255,255,0.55)" stroke-width="1.6" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <span>Akkademy</span>
+        </div>
+      </div>
+
+      <div class="home-indicator"></div>`,
+  deal: `<style>
+:host {
+  display: block; position: absolute; inset: 0;
+  overflow: hidden; border-radius: 44px;
+  background: #0C2A24; color: #fff;
+  -webkit-font-smoothing: antialiased;
+  font-family: "Satoshi", "Inter", system-ui, sans-serif;
+}
+.tab { cursor: pointer; }
+.tabbar .tab { cursor: pointer; }
+
+:root {
+  --akka-dark-green:      #0C2A24;
+  --akka-highlight-green: #3DDC97;
+  --warning: #F2B84B;
+  --font-display: "Satoshi", "Inter", system-ui, sans-serif;
+  --font-body:    "Satoshi", "Inter", system-ui, sans-serif;
+}
+*, *::before, *::after { box-sizing: border-box; }
+html, body {
+  margin: 0; padding: 0;
+  min-height: 100vh; background: #f0f0ec;
+  font-family: var(--font-body); -webkit-font-smoothing: antialiased;
+  display: flex; align-items: center; justify-content: center;
+  padding: 48px 20px;
+}
+
+/* ---- Phone frame ---- */
+.stage { position: relative; width: 390px; height: 844px; }
+.phone {
+  width: 390px; height: 844px; border-radius: 54px;
+  background: #1d1f22; padding: 11px; position: relative;
+  box-shadow:
+    0 60px 80px -30px rgba(20,30,40,0.22),
+    0 25px 50px -20px rgba(20,30,40,0.14),
+    0 0 0 1px rgba(255,255,255,0.06) inset;
+}
+.screen {
+  width: 100%; height: 100%; border-radius: 44px; overflow: hidden;
+  position: relative; background: var(--akka-dark-green); color: #fff;
+  display: flex; flex-direction: column;
+}
+.notch { position: absolute; top: 11px; left: 50%; transform: translateX(-50%); width: 162px; height: 32px; background: #1d1f22; border-radius: 0 0 22px 22px; z-index: 30; }
+.notch::after { content:""; position:absolute; right:26px; top:10px; width:11px; height:11px; border-radius:50%; background: radial-gradient(circle at 35% 35%, #2a3540 0%, #0a0e14 70%); }
+.notch::before { content:""; position:absolute; left:38px; top:13px; width:50px; height:5px; background:#0a0e14; border-radius:4px; }
+.btn-side { position: absolute; background: #1d1f22; width: 3px; }
+.btn-side.silent { left: -3px; top: 110px; height: 32px; border-radius: 2px 0 0 2px; }
+.btn-side.vol-up { left: -3px; top: 165px; height: 60px; border-radius: 2px 0 0 2px; }
+.btn-side.vol-dn { left: -3px; top: 235px; height: 60px; border-radius: 2px 0 0 2px; }
+.btn-side.power  { right: -3px; top: 200px; height: 96px; border-radius: 0 2px 2px 0; }
+
+/* ---- Status bar ---- */
+.statusbar {
+  position: absolute; top: 0; left: 0; right: 0; z-index: 20; height: 54px;
+  padding: 18px 30px 0;
+  display: flex; align-items: center; justify-content: space-between;
+  color: #fff;
+  font-family: -apple-system, "SF Pro Text", system-ui, sans-serif;
+  font-weight: 600; font-size: 16px; letter-spacing: -0.2px;
+}
+.statusbar .icons { display: flex; align-items: center; gap: 6px; }
+
+/* ---- Hero ---- */
+.hero {
+  position: relative; height: 320px; flex: none; overflow: hidden;
+  background:
+    radial-gradient(ellipse at 28% 55%, #1a6b4a 0%, transparent 55%),
+    radial-gradient(ellipse at 72% 28%, #20825a 0%, transparent 52%),
+    radial-gradient(ellipse at 50% 80%, #0a3d2e 0%, transparent 60%),
+    linear-gradient(160deg, #0e3b30 0%, #07211c 100%);
+}
+/* subtle grid pattern overlay */
+.hero::before {
+  content:""; position:absolute; inset:0;
+  background:
+    linear-gradient(180deg, rgba(8,28,24,0.25) 0%, rgba(8,28,24,0) 35%, rgba(8,28,24,0) 50%, rgba(6,20,17,0.7) 88%, var(--akka-dark-green) 100%);
+  z-index: 4; pointer-events:none;
+}
+.hero::after {
+  content:""; position:absolute; inset:0;
+  background: radial-gradient(ellipse 70% 50% at 50% 35%, rgba(46,180,120,0.18) 0%, transparent 70%);
+  mix-blend-mode: screen; z-index: 3; pointer-events:none;
+}
+/* dot grid texture */
+.hero-texture {
+  position: absolute; inset: 0; z-index: 2;
+  background-image: radial-gradient(rgba(61,220,151,0.12) 1px, transparent 1px);
+  background-size: 22px 22px;
+  pointer-events: none;
+}
+
+.back-btn {
+  position: absolute; top: 64px; left: 22px;
+  width: 30px; height: 30px;
+  display: flex; align-items: center; justify-content: center;
+  z-index: 10; color: #fff; cursor: pointer;
+}
+.play-btn {
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%, -65%);
+  width: 50px; height: 50px;
+  background: rgba(255,255,255,0.18);
+  backdrop-filter: blur(8px);
+  border: 1.5px solid rgba(255,255,255,0.65);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  z-index: 6; cursor: pointer;
+}
+.play-btn svg { margin-left: 3px; }
+.hero-title {
+  position: absolute; left: 22px; right: 22px; bottom: 16px; z-index: 6;
+}
+.hero-title h1 {
+  margin: 0 0 12px;
+  font-family: var(--font-display); font-size: 38px; font-weight: 600;
+  color: #fff; letter-spacing: -0.5px; line-height: 1;
+}
+.badges { display: flex; gap: 8px; }
+.badge-pill {
+  display: inline-flex; align-items: center;
+  padding: 6px 14px; border-radius: 999px;
+  font-size: 13px; font-weight: 700; letter-spacing: 0.1px;
+}
+.badge-green { color: var(--akka-highlight-green); border: 1.5px solid var(--akka-highlight-green); background: transparent; }
+.badge-grey  { color: rgba(255,255,255,0.85); border: 1.5px solid rgba(255,255,255,0.18); background: rgba(255,255,255,0.06); }
+
+/* ---- Body ---- */
+.body {
+  flex: 1; min-height: 0; padding: 14px 22px 0;
+  display: flex; flex-direction: column;
+  overflow-y: auto; scrollbar-width: none;
+}
+.body::-webkit-scrollbar { display: none; }
+
+.desc {
+  color: rgba(255,255,255,0.62); font-size: 14.5px; font-weight: 500;
+  line-height: 1.5; letter-spacing: -0.2px; margin: 0 0 14px;
+}
+
+.stat-card {
+  display: grid; grid-template-columns: 1fr 1fr 1fr;
+  background: rgba(255,255,255,0.025); border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 14px; padding: 12px 0; margin-bottom: 10px;
+}
+.stat { text-align: center; border-right: 1px solid rgba(255,255,255,0.07); }
+.stat:last-child { border-right: none; }
+.stat-label { color: rgba(255,255,255,0.5); font-size: 12px; font-weight: 500; margin-bottom: 4px; }
+.stat-value { color: #fff; font-size: 19px; font-weight: 700; letter-spacing: -0.4px; }
+
+.risk-card {
+  display: flex; align-items: center; justify-content: space-between;
+  background: rgba(242,184,75,0.06); border: 1px solid rgba(242,184,75,0.14);
+  border-radius: 12px; padding: 11px 16px; margin-bottom: 16px;
+}
+.risk-label { color: var(--warning); font-size: 13px; font-weight: 700; }
+.risk-dots  { display: flex; gap: 5px; }
+.risk-dot   { width: 7px; height: 7px; border-radius: 50%; background: rgba(255,255,255,0.16); }
+.risk-dot.on { background: var(--warning); }
+
+.fund-row {
+  display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;
+}
+.fund-amt { font-size: 22px; font-weight: 700; color: #fff; letter-spacing: -0.4px; }
+.days-left {
+  display: inline-flex; align-items: center; gap: 6px;
+  color: var(--warning); font-size: 14px; font-weight: 600;
+}
+.progress {
+  height: 6px; border-radius: 999px;
+  background: rgba(255,255,255,0.08); overflow: hidden; margin-bottom: 16px;
+}
+.progress-fill { height: 100%; width: 60%; background: var(--akka-highlight-green); border-radius: 999px; }
+
+.invest-row {
+  display: flex; align-items: center; gap: 12px;
+  padding-bottom: 14px; border-bottom: 1px solid rgba(255,255,255,0.07); margin-bottom: 14px;
+}
+.av-stack { display: flex; }
+.av-stack .av { width: 28px; height: 28px; border-radius: 50%; border: 2px solid var(--akka-dark-green); margin-left: -8px; }
+.av-stack .av:first-child { margin-left: 0; }
+.av-1 { background: radial-gradient(ellipse at 50% 35%, #d9b48a 0%, #8a5a3a 50%, #2a1810 100%); }
+.av-2 { background: radial-gradient(ellipse at 50% 35%, #f4d4ba 0%, #c98a64 50%, #4a2818 100%); }
+.av-3 { background: radial-gradient(ellipse at 50% 35%, #e8c8a8 0%, #a8744c 50%, #2a1810 100%); }
+.invest-text { color: rgba(255,255,255,0.6); font-size: 13.5px; font-weight: 500; }
+
+.actions { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 14px; }
+.action {
+  background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 14px; padding: 14px 0 12px;
+  display: flex; flex-direction: column; align-items: center; gap: 8px; cursor: pointer;
+}
+.action:hover { background: rgba(255,255,255,0.07); }
+.action-icon { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; }
+.action-label { color: #fff; font-size: 13px; font-weight: 600; letter-spacing: -0.1px; }
+
+/* ---- CTA bar ---- */
+.cta-bar {
+  flex: none; padding: 10px 18px 26px;
+  display: flex; align-items: center; gap: 10px;
+  background: linear-gradient(180deg, rgba(12,42,36,0) 0%, var(--akka-dark-green) 30%);
+  z-index: 10;
+}
+.invest-cta {
+  flex: 1; height: 52px; border-radius: 999px;
+  background: var(--akka-highlight-green); color: var(--akka-dark-green);
+  font-size: 15.5px; font-weight: 700; border: none;
+  letter-spacing: -0.2px; font-family: var(--font-body); cursor: pointer;
+}
+.invest-cta:hover { background: #58E3A6; }
+.daniel-orb {
+  width: 50px; height: 50px; border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #6FE9B5 0%, #3DDC97 18%, #0E3B30 75%, #061B17 100%);
+  box-shadow: 0 0 0 2px rgba(61,220,151,0.65), 0 0 18px rgba(61,220,151,0.4);
+  flex-shrink: 0; display: flex; align-items: center; justify-content: center; cursor: pointer;
+}
+.daniel-orb svg { width: 32px; height: 32px; }
+
+.home-indicator {
+  position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%);
+  width: 134px; height: 5px; background: rgba(255,255,255,0.85);
+  border-radius: 999px; z-index: 40;
+}
+
+</style>
+<div class="notch"></div>
+
+      <!-- Status bar -->
+      <div class="statusbar">
+        <span>12:22</span>
+        <span class="icons">
+          <svg width="18" height="11" viewBox="0 0 18 11" fill="none">
+            <rect x="0" y="7" width="3" height="4" rx="0.6" fill="#fff"/>
+            <rect x="5" y="5" width="3" height="6" rx="0.6" fill="#fff"/>
+            <rect x="10" y="2.5" width="3" height="8.5" rx="0.6" fill="#fff"/>
+            <rect x="15" y="0" width="3" height="11" rx="0.6" fill="#fff"/>
+          </svg>
+          <svg width="16" height="11" viewBox="0 0 16 11" fill="none">
+            <path d="M8 2.6c2.1 0 4 .8 5.4 2.2l1-1A8 8 0 0 0 8 1.4 8 8 0 0 0 1.6 3.8l1 1A7.6 7.6 0 0 1 8 2.6Z" fill="#fff"/>
+            <path d="M8 6c1.3 0 2.4.5 3.3 1.3l1-1A6 6 0 0 0 8 4.6 6 6 0 0 0 3.7 6.3l1 1A4.7 4.7 0 0 1 8 6Z" fill="#fff"/>
+            <circle cx="8" cy="9.6" r="1.4" fill="#fff"/>
+          </svg>
+          <svg width="26" height="12" viewBox="0 0 26 12" fill="none">
+            <rect x="0.5" y="0.5" width="22" height="11" rx="3" stroke="#fff" stroke-opacity="0.5" fill="none"/>
+            <rect x="2" y="2" width="19" height="8" rx="1.5" fill="#fff"/>
+            <path d="M24 4v4c.6-.2 1-.7 1-1.4V5.4c0-.7-.4-1.2-1-1.4Z" fill="#fff" fill-opacity="0.5"/>
+          </svg>
+        </span>
+      </div>
+
+      <!-- Hero -->
+      <div class="hero">
+        <div class="hero-texture"></div>
+
+        <div class="back-btn" onclick="window.navigate('home')" style="cursor:pointer">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+            <path d="M15 5l-7 7 7 7" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+
+        <div class="play-btn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="#fff">
+            <path d="M8 5v14l11-7z"/>
+          </svg>
+        </div>
+
+        <div class="hero-title">
+          <h1>Praxis</h1>
+          <div class="badges">
+            <span class="badge-pill badge-green">Pre-IPO</span>
+            <span class="badge-pill badge-grey">AI</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Scrollable body -->
+      <div class="body">
+        <p class="desc">The AI layer between humans and machines. Praxis is redefining how enterprises work one autonomous agent at a time.</p>
+
+        <div class="stat-card">
+          <div class="stat">
+            <div class="stat-label">Valuation</div>
+            <div class="stat-value">€30M</div>
+          </div>
+          <div class="stat">
+            <div class="stat-label">Allocation</div>
+            <div class="stat-value">€1–2M</div>
+          </div>
+          <div class="stat">
+            <div class="stat-label">Target</div>
+            <div class="stat-value">x2</div>
+          </div>
+        </div>
+
+        <div class="risk-card">
+          <span class="risk-label">Moderate risk</span>
+          <div class="risk-dots">
+            <span class="risk-dot on"></span>
+            <span class="risk-dot on"></span>
+            <span class="risk-dot on"></span>
+            <span class="risk-dot"></span>
+            <span class="risk-dot"></span>
+          </div>
+        </div>
+
+        <div class="fund-row">
+          <span class="fund-amt">€1,72M</span>
+          <span class="days-left">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+              <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/>
+              <path d="M12 7v5l3 2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+            </svg>
+            5 days left
+          </span>
+        </div>
+        <div class="progress"><div class="progress-fill"></div></div>
+
+        <div class="invest-row">
+          <div class="av-stack">
+            <span class="av av-1"></span>
+            <span class="av av-2"></span>
+            <span class="av av-3"></span>
+          </div>
+          <span class="invest-text">Pedro, Laura + 1 240 have invested</span>
+        </div>
+
+        <div class="actions">
+          <div class="action">
+            <div class="action-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                <rect x="3" y="5" width="18" height="14" rx="3" stroke="#3DDC97" stroke-width="1.6"/>
+                <path d="M10 9 l5 3 l-5 3 z" fill="#3DDC97"/>
+              </svg>
+            </div>
+            <span class="action-label">Pitch Replay</span>
+          </div>
+          <div class="action">
+            <div class="action-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                <path d="M4 6c0-1.1.9-2 2-2h12a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-7l-4 3.5V17H6a2 2 0 0 1-2-2z" stroke="#7B5BEC" stroke-width="1.6" stroke-linejoin="round"/>
+                <circle cx="9" cy="10.5" r="1" fill="#7B5BEC"/>
+                <circle cx="12" cy="10.5" r="1" fill="#7B5BEC"/>
+                <circle cx="15" cy="10.5" r="1" fill="#7B5BEC"/>
+              </svg>
+            </div>
+            <span class="action-label">Discussion</span>
+          </div>
+          <div class="action">
+            <div class="action-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                <path d="M13 2 L4 13 h6 l-1 9 l9-12 h-6 z" stroke="#7B5BEC" stroke-width="1.6" stroke-linejoin="round" fill="none"/>
+              </svg>
+            </div>
+            <span class="action-label">Summary</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- CTA bar -->
+      <div class="cta-bar">
+        <button class="invest-cta">Invest in Praxis</button>
+        <div class="daniel-orb" onclick="window.navigate('daniel')" style="cursor:pointer">
+          <svg viewBox="0 0 24 24">
+            <path d="M5 24 V20 c0-2 2-3.5 6-3.5 s6 1.5 6 3.5 v4 z" fill="#0a0a0a"/>
+            <path d="M9 18 l3 3 l3-3 v6 h-6 z" fill="#fff"/>
+            <path d="M12 19 l-1 1 l1 3 l1-3 z" fill="#7B1E22"/>
+            <ellipse cx="12" cy="11" rx="5.5" ry="6" fill="#f7f5ef"/>
+            <path d="M7 9 q-1.2 3 0 6 q2-1 2.5-2.5 z" fill="#3DDC97"/>
+            <path d="M17 9 q1.2 3 0 6 q-2-1-2.5-2.5 z" fill="#3DDC97"/>
+            <path d="M12 4 l-1.2 3.5 h2.4 z" fill="#3DDC97"/>
+            <ellipse cx="12" cy="13" rx="2.4" ry="1.7" fill="#ebe6da"/>
+            <ellipse cx="10" cy="11" rx="0.6" ry="0.85" fill="#0a0a0a"/>
+            <ellipse cx="14" cy="11" rx="0.6" ry="0.85" fill="#0a0a0a"/>
+          </svg>
+        </div>
+      </div>
+
+      <div class="home-indicator"></div>`,
+  akkademy: `<style>
+:host {
+  display: block; position: absolute; inset: 0;
+  overflow: hidden; border-radius: 44px;
+  background: #0C2A24; color: #fff;
+  -webkit-font-smoothing: antialiased;
+  font-family: "Satoshi", "Inter", system-ui, sans-serif;
+}
+.tab { cursor: pointer; }
+.tabbar .tab { cursor: pointer; }
+
+:root {
+  --akka-dark-green:      #0C2A24;
+  --akka-highlight-green: #3DDC97;
+  --font-display: "Satoshi", "Inter", system-ui, sans-serif;
+  --font-body:    "Satoshi", "Inter", system-ui, sans-serif;
+}
+*, *::before, *::after { box-sizing: border-box; }
+html, body {
+  margin: 0; padding: 0;
+  min-height: 100vh; background: #f0f0ec;
+  font-family: var(--font-body); -webkit-font-smoothing: antialiased;
+  display: flex; align-items: center; justify-content: center;
+  padding: 48px 20px;
+}
+
+/* ---- Phone frame ---- */
+.stage { position: relative; width: 390px; height: 844px; }
+.phone {
+  width: 390px; height: 844px; border-radius: 54px;
+  background: #1d1f22; padding: 11px; position: relative;
+  box-shadow:
+    0 60px 80px -30px rgba(20,30,40,0.22),
+    0 25px 50px -20px rgba(20,30,40,0.14),
+    0 0 0 1px rgba(255,255,255,0.06) inset;
+}
+.screen {
+  width: 100%; height: 100%; border-radius: 44px; overflow: hidden;
+  position: relative; background: var(--akka-dark-green); color: #fff;
+  display: flex; flex-direction: column;
+}
+.notch { position: absolute; top: 11px; left: 50%; transform: translateX(-50%); width: 162px; height: 32px; background: #1d1f22; border-radius: 0 0 22px 22px; z-index: 30; }
+.notch::after { content:""; position:absolute; right:26px; top:10px; width:11px; height:11px; border-radius:50%; background: radial-gradient(circle at 35% 35%, #2a3540 0%, #0a0e14 70%); }
+.notch::before { content:""; position:absolute; left:38px; top:13px; width:50px; height:5px; background:#0a0e14; border-radius:4px; }
+.btn-side { position: absolute; background: #1d1f22; width: 3px; }
+.btn-side.silent { left: -3px; top: 110px; height: 32px; border-radius: 2px 0 0 2px; }
+.btn-side.vol-up { left: -3px; top: 165px; height: 60px; border-radius: 2px 0 0 2px; }
+.btn-side.vol-dn { left: -3px; top: 235px; height: 60px; border-radius: 2px 0 0 2px; }
+.btn-side.power  { right: -3px; top: 200px; height: 96px; border-radius: 0 2px 2px 0; }
+
+/* ---- Status bar ---- */
+.statusbar {
+  flex: none; height: 54px; padding: 18px 30px 0;
+  display: flex; align-items: center; justify-content: space-between;
+  color: #fff;
+  font-family: -apple-system, "SF Pro Text", system-ui, sans-serif;
+  font-weight: 600; font-size: 16px; letter-spacing: -0.2px;
+}
+.statusbar .icons { display: flex; align-items: center; gap: 6px; }
+
+/* ---- Scrollable content ---- */
+.content {
+  flex: 1; min-height: 0;
+  overflow-y: auto; padding: 0 22px 12px;
+  scrollbar-width: none;
+}
+.content::-webkit-scrollbar { display: none; }
+
+/* ---- XP header row ---- */
+.xp-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 0 22px; gap: 14px;
+}
+.level-pill {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 8px 14px; border-radius: 999px;
+  background: rgba(61,220,151,0.10);
+  border: 1px solid rgba(61,220,151,0.22);
+  color: var(--akka-highlight-green);
+  font-size: 14px; font-weight: 700; letter-spacing: -0.1px;
+}
+.level-pill .star {
+  width: 18px; height: 18px; border-radius: 50%;
+  border: 1px solid var(--akka-highlight-green);
+  display: flex; align-items: center; justify-content: center;
+}
+.level-pill .dot { width: 4px; height: 4px; border-radius: 50%; background: currentColor; }
+.xp-prog {
+  flex: 1; max-width: 180px;
+  display: flex; flex-direction: column; align-items: flex-end; gap: 6px;
+}
+.xp-prog .label { color: rgba(255,255,255,0.55); font-size: 13px; font-weight: 500; }
+.xp-prog .bar { width: 100%; height: 4px; border-radius: 999px; background: rgba(255,255,255,0.10); overflow: hidden; }
+.xp-prog .bar > i { display: block; height: 100%; width: 62%; background: var(--akka-highlight-green); border-radius: 999px; }
+
+/* ---- Section heads ---- */
+.section-head {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 14px;
+}
+.section-head h2 {
+  margin: 0; color: #fff;
+  font-size: 22px; font-weight: 700; letter-spacing: -0.4px;
+  font-family: var(--font-display);
+}
+.streak {
+  display: inline-flex; align-items: center; gap: 6px;
+  color: #fff; font-size: 13px; font-weight: 600;
+}
+
+/* ---- Daily quiz card ---- */
+.quiz {
+  background: rgba(61,220,151,0.06);
+  border: 1px solid rgba(61,220,151,0.18);
+  border-radius: 18px; padding: 18px; margin-bottom: 26px;
+}
+.quiz-head {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  gap: 14px; margin-bottom: 18px;
+}
+.quiz-q {
+  color: #fff; font-size: 16px; font-weight: 700;
+  line-height: 1.35; letter-spacing: -0.2px;
+}
+.xp-badge {
+  flex-shrink: 0; padding: 5px 10px; border-radius: 8px;
+  background: rgba(61,220,151,0.14);
+  color: var(--akka-highlight-green); font-size: 12px; font-weight: 700;
+}
+.quiz-foot { display: flex; align-items: center; justify-content: space-between; }
+.quiz-meta { display: flex; flex-direction: column; gap: 8px; }
+.quiz-pips { display: flex; gap: 4px; }
+.quiz-pip { width: 24px; height: 4px; border-radius: 999px; background: rgba(255,255,255,0.10); }
+.quiz-pip.on { background: var(--akka-highlight-green); }
+.quiz-label { color: #fff; font-size: 13px; font-weight: 600; }
+.answer-btn {
+  padding: 10px 22px; border-radius: 999px;
+  background: var(--akka-highlight-green); color: var(--akka-dark-green);
+  font-size: 14px; font-weight: 700; border: none;
+  font-family: var(--font-body); cursor: pointer;
+}
+.answer-btn:hover { background: #58E3A6; }
+
+/* ---- Videos row ---- */
+.videos {
+  display: flex; gap: 12px; overflow-x: auto;
+  margin: 0 -22px 26px; padding: 0 22px;
+  scrollbar-width: none;
+}
+.videos::-webkit-scrollbar { display: none; }
+
+.video-card {
+  flex-shrink: 0; width: 200px; border-radius: 14px;
+  overflow: hidden; background: rgba(255,255,255,0.04);
+}
+.video-thumb {
+  height: 130px; position: relative; overflow: hidden;
+}
+/* Replace image-slot with CSS gradient backgrounds */
+.video-thumb .thumb-bg {
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, #1f8060 0%, #0e3b30 100%);
+}
+.video-thumb .thumb-bg.v2 {
+  background: linear-gradient(135deg, #1a5a8a 0%, #0a2a4a 100%);
+}
+.video-thumb .thumb-bg.v3 {
+  background: linear-gradient(135deg, #5b3a8a 0%, #2a1a4a 100%);
+}
+/* subtle dot grid on thumbs */
+.video-thumb .thumb-bg::after {
+  content: ""; position: absolute; inset: 0;
+  background-image: radial-gradient(rgba(255,255,255,0.08) 1px, transparent 1px);
+  background-size: 16px 16px;
+}
+.video-thumb .play {
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 40px; height: 40px; border-radius: 50%;
+  background: rgba(255,255,255,0.18);
+  border: 1.5px solid rgba(255,255,255,0.5);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 2; cursor: pointer;
+}
+.video-thumb .duration {
+  position: absolute; bottom: 8px; right: 8px;
+  background: rgba(0,0,0,0.65); color: #fff;
+  font-size: 11px; font-weight: 700;
+  padding: 3px 8px; border-radius: 6px; z-index: 2;
+}
+.video-info { padding: 12px 14px 14px; }
+.video-title { color: #fff; font-size: 15px; font-weight: 700; margin-bottom: 4px; letter-spacing: -0.2px; }
+.video-meta { display: flex; align-items: center; justify-content: space-between; }
+.video-cat  { color: rgba(255,255,255,0.5); font-size: 12px; font-weight: 500; }
+.video-xp   { color: var(--akka-highlight-green); font-size: 12px; font-weight: 700; }
+
+/* ---- Topics grid ---- */
+.topics-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 18px; }
+.topic-card {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.05);
+  border-radius: 16px; padding: 16px;
+}
+.topic-icon {
+  width: 38px; height: 38px; border-radius: 10px;
+  background: rgba(123,91,236,0.16);
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 12px;
+}
+.topic-name  { color: #fff; font-size: 16px; font-weight: 700; margin-bottom: 4px; letter-spacing: -0.2px; }
+.topic-meta  { color: rgba(255,255,255,0.45); font-size: 12px; font-weight: 500; margin-bottom: 12px; }
+.topic-bar   { height: 4px; border-radius: 999px; background: rgba(255,255,255,0.08); overflow: hidden; }
+.topic-bar > i { display: block; height: 100%; background: linear-gradient(90deg, #5B6FEC 0%, #B98AEC 100%); border-radius: 999px; }
+
+/* ---- Tab bar ---- */
+.tabbar {
+  flex: none; height: 88px; padding: 8px 16px 28px;
+  background: var(--akka-dark-green);
+  border-top: 1px solid rgba(255,255,255,0.04);
+  display: grid; grid-template-columns: repeat(5, 1fr);
+}
+.tab {
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  color: rgba(255,255,255,0.45); text-decoration: none; cursor: pointer;
+}
+.tab.active { color: var(--akka-highlight-green); }
+.tab .label { font-size: 11px; font-weight: 600; letter-spacing: -0.1px; }
+
+.home-indicator {
+  position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%);
+  width: 134px; height: 5px; background: rgba(255,255,255,0.85);
+  border-radius: 999px; z-index: 40;
+}
+
+</style>
+<div class="notch"></div>
+
+      <!-- Status bar -->
+      <div class="statusbar">
+        <span>12:22</span>
+        <span class="icons">
+          <svg width="18" height="11" viewBox="0 0 18 11" fill="none">
+            <rect x="0" y="7" width="3" height="4" rx="0.6" fill="#fff"/>
+            <rect x="5" y="5" width="3" height="6" rx="0.6" fill="#fff"/>
+            <rect x="10" y="2.5" width="3" height="8.5" rx="0.6" fill="#fff"/>
+            <rect x="15" y="0" width="3" height="11" rx="0.6" fill="#fff"/>
+          </svg>
+          <svg width="16" height="11" viewBox="0 0 16 11" fill="none">
+            <path d="M8 2.6c2.1 0 4 .8 5.4 2.2l1-1A8 8 0 0 0 8 1.4 8 8 0 0 0 1.6 3.8l1 1A7.6 7.6 0 0 1 8 2.6Z" fill="#fff"/>
+            <path d="M8 6c1.3 0 2.4.5 3.3 1.3l1-1A6 6 0 0 0 8 4.6 6 6 0 0 0 3.7 6.3l1 1A4.7 4.7 0 0 1 8 6Z" fill="#fff"/>
+            <circle cx="8" cy="9.6" r="1.4" fill="#fff"/>
+          </svg>
+          <svg width="26" height="12" viewBox="0 0 26 12" fill="none">
+            <rect x="0.5" y="0.5" width="22" height="11" rx="3" stroke="#fff" stroke-opacity="0.5" fill="none"/>
+            <rect x="2" y="2" width="19" height="8" rx="1.5" fill="#fff"/>
+            <path d="M24 4v4c.6-.2 1-.7 1-1.4V5.4c0-.7-.4-1.2-1-1.4Z" fill="#fff" fill-opacity="0.5"/>
+          </svg>
+        </span>
+      </div>
+
+      <div class="content">
+
+        <!-- XP header -->
+        <div class="xp-row">
+          <div class="level-pill">
+            <span class="star">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="#3DDC97">
+                <path d="M12 2 l3 7 7 1 -5 5 1 7 -6-3 -6 3 1-7 -5-5 7-1z"/>
+              </svg>
+            </span>
+            Learner
+            <span class="dot"></span>
+            Lv2
+          </div>
+          <div class="xp-prog">
+            <span class="label">620 / 1000 XP</span>
+            <span class="bar"><i></i></span>
+          </div>
+        </div>
+
+        <!-- Daily quiz -->
+        <div class="section-head">
+          <h2>Daily quiz</h2>
+          <span class="streak">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+              <path d="M12 2c1 4 5 5 5 10a5 5 0 0 1-10 0c0-2 1-3 2-4-1 4 3 4 3 1 0-3-1-4 0-7Z" fill="#F2B84B"/>
+            </svg>
+            7 day streak
+          </span>
+        </div>
+
+        <div class="quiz">
+          <div class="quiz-head">
+            <div class="quiz-q">What is a revenue multiple in a series A valuation?</div>
+            <div class="xp-badge">+50 XP</div>
+          </div>
+          <div class="quiz-foot">
+            <div class="quiz-meta">
+              <div class="quiz-pips">
+                <span class="quiz-pip on"></span>
+                <span class="quiz-pip"></span>
+                <span class="quiz-pip"></span>
+              </div>
+              <div class="quiz-label">Q1 · Easy</div>
+            </div>
+            <button class="answer-btn">Answer</button>
+          </div>
+        </div>
+
+        <!-- Videos -->
+        <div class="section-head"><h2>Learn in 2 minutes</h2></div>
+
+        <div class="videos">
+          <!-- Cap table -->
+          <div class="video-card">
+            <div class="video-thumb">
+              <div class="thumb-bg"></div>
+              <span class="play">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="#fff"><path d="M8 5v14l11-7z"/></svg>
+              </span>
+              <span class="duration">2 min</span>
+            </div>
+            <div class="video-info">
+              <div class="video-title">Cap table</div>
+              <div class="video-meta">
+                <span class="video-cat">Equity & dilution</span>
+                <span class="video-xp">+80 XP</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Pre-IPO -->
+          <div class="video-card">
+            <div class="video-thumb">
+              <div class="thumb-bg v2"></div>
+              <span class="play">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="#fff"><path d="M8 5v14l11-7z"/></svg>
+              </span>
+              <span class="duration">3 min</span>
+            </div>
+            <div class="video-info">
+              <div class="video-title">Pre-IPO explained</div>
+              <div class="video-meta">
+                <span class="video-cat">Risk & Upside</span>
+                <span class="video-xp">+80 XP</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- SAFE notes -->
+          <div class="video-card">
+            <div class="video-thumb">
+              <div class="thumb-bg v3"></div>
+              <span class="play">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="#fff"><path d="M8 5v14l11-7z"/></svg>
+              </span>
+              <span class="duration">2 min</span>
+            </div>
+            <div class="video-info">
+              <div class="video-title">SAFE notes</div>
+              <div class="video-meta">
+                <span class="video-cat">Funding</span>
+                <span class="video-xp">+60 XP</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Topics -->
+        <div class="section-head"><h2>Topics</h2></div>
+
+        <div class="topics-grid">
+          <div class="topic-card">
+            <div class="topic-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                <circle cx="11" cy="11" r="6" stroke="#7B5BEC" stroke-width="1.8"/>
+                <path d="m20 20-4-4" stroke="#7B5BEC" stroke-width="1.8" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <div class="topic-name">Due diligence</div>
+            <div class="topic-meta">12 videos · 3 quizzes</div>
+            <div class="topic-bar"><i style="width:62%"></i></div>
+          </div>
+
+          <div class="topic-card">
+            <div class="topic-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                <rect x="4" y="14" width="3" height="6" rx="0.5" fill="#7B5BEC"/>
+                <rect x="9" y="10" width="3" height="10" rx="0.5" fill="#7B5BEC"/>
+                <rect x="14" y="6" width="3" height="14" rx="0.5" fill="#7B5BEC"/>
+                <path d="m4 11 5-5 4 3 6-7" stroke="#7B5BEC" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+              </svg>
+            </div>
+            <div class="topic-name">Valuation</div>
+            <div class="topic-meta">8 videos · 2 quizzes</div>
+            <div class="topic-bar"><i style="width:38%"></i></div>
+          </div>
+        </div>
+
+      </div><!-- /content -->
+
+      <!-- Tab bar -->
+      <div class="tabbar">
+        <div class="tab" onclick="window.navigate('home')" style="cursor:pointer">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+            <path d="M3 11 12 3 l9 8 v9 a2 2 0 0 1-2 2h-4 v-7 h-6 v7 H5 a2 2 0 0 1-2-2 z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+          </svg>
+          <span class="label">Home</span>
+        </div>
+        <div class="tab" onclick="window.navigate('portfolio')" style="cursor:pointer">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+            <rect x="4" y="14" width="3" height="6" rx="0.5" fill="currentColor"/>
+            <rect x="10" y="9" width="3" height="11" rx="0.5" fill="currentColor"/>
+            <rect x="16" y="4" width="3" height="16" rx="0.5" fill="currentColor"/>
+          </svg>
+          <span class="label">Portfolio</span>
+        </div>
+        <div class="tab" onclick="window.navigate('deal_popup')" style="cursor:pointer">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+            <path d="M12 3 c2.5 3 4 6 4 9 0 2.5-1.5 4.5-4 5-2.5-.5-4-2.5-4-5 0-3 1.5-6 4-9z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+            <circle cx="12" cy="11" r="1.5" fill="currentColor"/>
+            <path d="M9 18 8 21 M15 18 l1 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+          </svg>
+          <span class="label">Deal</span>
+        </div>
+        <div class="tab" onclick="window.navigate('community')" style="cursor:pointer">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+            <circle cx="9" cy="10" r="3" stroke="currentColor" stroke-width="1.6"/>
+            <circle cx="16" cy="9" r="2.4" stroke="currentColor" stroke-width="1.6"/>
+            <path d="M3 19 c0-2.5 2-4 6-4 s6 1.5 6 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+            <path d="M14 15 c2.5 0 5 1 5 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+          </svg>
+          <span class="label">Community</span>
+        </div>
+        <div class="tab active">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+            <path d="M2 9 12 4 22 9 12 14 z" fill="currentColor"/>
+            <path d="M6 11 v5 c0 1.5 3 3 6 3 s6-1.5 6-3 v-5" stroke="currentColor" stroke-width="1.6" fill="none"/>
+            <path d="M22 9 v6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+          </svg>
+          <span class="label">Akkademy</span>
+        </div>
+      </div>
+
+      <div class="home-indicator"></div>`,
+};
+
+window.navigate = function(id) {
+  const root = document.getElementById('app-root');
+  if (!root.shadowRoot) root.attachShadow({ mode: 'open' });
+  root.shadowRoot.innerHTML = SCREENS[id] || SCREENS.home;
+};
+
+navigate('home');
+</script>
 </body>
 </html>
